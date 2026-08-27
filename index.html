@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OfbuzzMart | B2B Business Directory & Catalogue</title>
+  <style>
+    :root {
+      --bg-white: #ffffff;
+      --bg-light: #f8fafc;
+      --text-main: #000000;
+      --text-muted: #4b5563;
+      --navy-primary: #0f172a;
+      --navy-accent: #1e3a8a;
+      --border-color: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    header {
+      background-color: var(--navy-primary);
+      color: #ffffff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-logo span {
+      color: #60a5fa;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      border: 1px solid #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      background-color: var(--navy-accent);
+      border-color: var(--navy-accent);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .search-container {
+      margin-bottom: 2rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    .search-input:focus {
+      outline: 2px solid var(--navy-accent);
+    }
+
+    .business-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-white);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .card.sponsored {
+      border: 2px solid var(--navy-accent);
+    }
+
+    .card-banner {
+      height: 180px;
+      background-color: var(--bg-light);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .badge-sponsored {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--navy-primary);
+      color: #ffffff;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-verified {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-category {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .card-description {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .card-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: block;
+      text-align: center;
+      background-color: var(--navy-primary);
+      color: #ffffff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background-color: var(--navy-accent);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--navy-primary);
+      border: 1px solid var(--navy-primary);
+      margin-top: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-light);
+      color: var(--navy-accent);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 200;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: var(--bg-white);
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .product-item {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .product-item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .loader {
+      text-align: center;
+      padding: 2rem;
+      color: var(--navy-accent);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
+    <nav>
+      <a href="index.html" class="active">Directory</a>
+      <a href="seller.html">Seller Portal</a>
+      <a href="Master.html">Admin</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="search-container">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search businesses by name, category, or city..." onkeyup="filterDirectory()">
+    </div>
+
+    <div id="loader" class="loader">Fetching live businesses from Google Sheets...</div>
+    <div id="businessList" class="business-grid"></div>
+  </div>
+
+  <div id="bizModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
+    let businesses = [];
+
+    async function loadData() {
+      const loader = document.getElementById("loader");
+      try {
+        const res = await fetch(SCRIPT_URL);
+        businesses = await res.json();
+        if (loader) loader.style.display = "none";
+        renderDirectory();
+      } catch (err) {
+        if (loader) loader.innerText = "Error loading directory data.";
+      }
+    }
+
+    function renderDirectory(filter = "") {
+      const container = document.getElementById("businessList");
+      container.innerHTML = "";
+
+      const sorted = [...businesses].sort((a, b) => (b.isSponsored ? 1 : 0) - (a.isSponsored ? 1 : 0));
+
+      const filtered = sorted.filter(b => 
+        (b.name || "").toLowerCase().includes(filter.toLowerCase()) ||
+        (b.category || "").toLowerCase().includes(filter.toLowerCase()) ||
+        (b.location || "").toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No businesses found.</p>`;
+        return;
+      }
+
+      filtered.forEach(b => {
+        const card = document.createElement("div");
+        card.className = `card ${b.isSponsored ? "sponsored" : ""}`;
+        card.innerHTML = `
+          <div class="card-banner" style="background-image: url('${b.image || 'https://via.placeholder.com/600x300?text=Business+Image'}')">
+            ${b.isSponsored ? `<span class="badge-sponsored">Featured Sponsor</span>` : ""}
+          </div>
+          <div class="card-body">
+            ${b.isVerified ? `<span class="badge-verified">✓ Verified Seller</span>` : ""}
+            <h3 class="card-title">${b.name}</h3>
+            <div class="card-category">${b.category}</div>
+            <p class="card-description">${(b.about || "").substring(0, 110)}${(b.about || "").length > 110 ? '...' : ''}</p>
+            <div class="card-meta">📍 ${b.location} | 📞 ${b.contact}</div>
+            <button class="btn" onclick="openProfile('${b.id}')">View Profile & Catalogue</button>
+            <a href="tel:${b.contact}" class="btn btn-secondary">Contact Supplier</a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterDirectory() {
+      renderDirectory(document.getElementById("searchInput").value);
+    }
+
+    function openProfile(id) {
+      const b = businesses.find(item => item.id === id);
+      if (!b) return;
+
+      const modalBody = document.getElementById("modalBody");
+      modalBody.innerHTML = `
+        <h2>${b.name}</h2>
+        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">${b.category} • ${b.location}</p>
+        <hr style="margin: 1rem 0; border: 0; border-top: 1px solid var(--border-color);" />
+        <h4 style="margin-bottom: 0.5rem;">About Company</h4>
+        <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">${b.about || "No profile details provided."}</p>
+        <h4 style="margin-bottom: 0.5rem;">Product & Service Catalogue</h4>
+        <div class="product-list">
+          ${b.catalogue && b.catalogue.length ? b.catalogue.map(p => `
+            <div class="product-item">
+              <img src="${p.img || 'https://via.placeholder.com/150'}" alt="${p.name}">
+              <div style="font-weight: 600; font-size: 0.9rem;">${p.name}</div>
+              <div style="color: var(--navy-accent); font-size: 0.85rem; font-weight: 700;">${p.price}</div>
+            </div>
+          `).join("") : `<p style="font-size: 0.85rem; color: var(--text-muted);">No catalogue items listed.</p>`}
+        </div>
+        <div style="margin-top: 2rem;">
+          <a href="https://wa.me/${b.contact.replace(/[^0-9]/g, '')}" target="_blank" class="btn">Inquire via WhatsApp</a>
+        </div>
+      `;
+
+      document.getElementById("bizModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("bizModal").style.display = "none";
+    }
+
+    window.onclick = function(e) {
+      const m = document.getElementById("bizModal");
+      if (e.target === m) m.style.display = "none";
+    };
+
+    loadData();
+  </script>
+</body>
+</html>
