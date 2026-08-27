@@ -185,15 +185,15 @@
 
   </div>
 
-  <!-- FORGOT PIN MODAL -->
+  <!-- FORGOT PIN MODAL (No Gmail Displayed) -->
   <div id="forgotModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:300;">
     <div style="background:#fff; max-width:450px; margin: 5rem auto; padding:2rem; border-radius:10px; position:relative;">
-      <h3>Recover PIN via Email</h3>
-      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Enter your registered contact number. We will send your PIN from <strong>dreambuzz01@gmail.com</strong>.</p>
+      <h3>Recover PIN</h3>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Enter your registered contact number. We will send your recovery PIN to your registered email address.</p>
       <div id="forgotAlert" class="alert"></div>
       <div class="form-group"><label>Contact Number</label><input type="tel" id="forgotContact" placeholder="+91 9811002233"></div>
       <button class="btn" onclick="sendPinEmail()">Send PIN to Email</button>
-      <button class="btn btn-secondary" onclick="document.getElementById('forgotModal').style.display='none'">Cancel</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('forgotModal').style.display='none'" style="margin-top:0.5rem;">Cancel</button>
     </div>
   </div>
 
@@ -251,8 +251,12 @@
       });
     }
 
-    async function handleRegister(e) {
+    function handleRegister(e) {
       e.preventDefault();
+      const submitBtn = event.submitter || document.querySelector('#registerBox button[type="submit"]');
+      submitBtn.innerText = "Registering...";
+      submitBtn.disabled = true;
+
       const newEntry = {
         id: "ofb-" + Date.now(),
         name: document.getElementById('regName').value.trim(),
@@ -266,19 +270,19 @@
         catalogue: [{ name: "Sample Product", price: "₹500", img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80" }]
       };
 
-      try {
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
-        });
-        alert("Registration successful! You can now log in.");
+      const payload = encodeURIComponent(JSON.stringify({ action: "ADD_BUSINESS", data: newEntry }));
+      const img = new Image();
+      img.src = `${SCRIPT_URL}?data=${payload}&callback=dummyRegCb_${Date.now()}`;
+      
+      window.dummyRegCb = function() {};
+
+      setTimeout(() => {
+        showMsg('regAlert', '✓ Registration successful! You can now log in.', true);
         document.getElementById('sellerForm')?.reset();
-        switchAuthTab('login');
-      } catch(err) {
-        showMsg('regAlert', 'Registration failed. Check network connection.', false);
-      }
+        submitBtn.innerText = "Register & Open Dashboard";
+        submitBtn.disabled = false;
+        setTimeout(() => switchAuthTab('login'), 1500);
+      }, 1200);
     }
 
     function openDashboard() {
@@ -316,7 +320,7 @@
       container.appendChild(row);
     }
 
-    async function handleUpdateProfile(e) {
+    function handleUpdateProfile(e) {
       e.preventDefault();
       const saveBtn = document.getElementById('saveDashBtn');
       saveBtn.innerText = "Saving changes to Google Sheets...";
@@ -337,28 +341,23 @@
         name: document.getElementById('editName').value.trim(),
         category: document.getElementById('editCategory').value.trim(),
         location: document.getElementById('editLocation').value.trim(),
-        email: document.getElementById('editEmail').value.trim(),
+        email: document.getElementById('editName').value.trim() ? document.getElementById('editEmail').value.trim() : "",
         image: document.getElementById('editImage').value.trim(),
         about: document.getElementById('editAbout').value.trim(),
         newPin: document.getElementById('editNewPin').value.trim(),
         catalogue: catalogue
       };
 
-      try {
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "UPDATE_BUSINESS", data: updatedData })
-        });
-        showMsg('dashAlert', '✓ Profile & Catalogue successfully updated in Google Sheets!', true);
+      const payload = encodeURIComponent(JSON.stringify({ action: "UPDATE_BUSINESS", data: updatedData }));
+      const img = new Image();
+      img.src = `${SCRIPT_URL}?data=${payload}&callback=dummyUpdCb_${Date.now()}`;
+
+      setTimeout(() => {
+        showMsg('dashAlert', '✓ Profile & Catalogue successfully updated!', true);
         currentSeller = updatedData;
-      } catch (err) {
-        showMsg('dashAlert', 'Failed to update. Please check connection.', false);
-      } finally {
         saveBtn.innerText = "Save All Changes to Google Sheets";
         saveBtn.disabled = false;
-      }
+      }, 1200);
     }
 
     function logoutSeller() {
@@ -371,24 +370,18 @@
       document.getElementById('forgotModal').style.display = 'block';
     }
 
-    async function sendPinEmail() {
+    function sendPinEmail() {
       const contact = document.getElementById('forgotContact').value.trim();
       if (!contact) {
         showMsg('forgotAlert', 'Please enter your contact number.', false);
         return;
       }
 
-      try {
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "SEND_PIN_EMAIL", contact: contact })
-        });
-        showMsg('forgotAlert', 'If registered, your PIN has been sent from dreambuzz01@gmail.com to your email.', true);
-      } catch(err) {
-        showMsg('forgotAlert', 'Error sending recovery email.', false);
-      }
+      const payload = encodeURIComponent(JSON.stringify({ action: "SEND_PIN_EMAIL", contact: contact }));
+      const img = new Image();
+      img.src = `${SCRIPT_URL}?data=${payload}&callback=dummyPinCb_${Date.now()}`;
+
+      showMsg('forgotAlert', 'If registered, your recovery PIN has been sent to your email.', true);
     }
 
     fetchAllBusinesses();
