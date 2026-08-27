@@ -14,6 +14,7 @@
       --navy-accent: #1e3a8a;
       --border-color: #e2e8f0;
       --danger-red: #991b1b;
+      --success-green: #047857;
     }
 
     * {
@@ -107,6 +108,27 @@
       font-size: 0.9rem;
     }
 
+    .alert-box {
+      display: none;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: var(--success-green);
+      border: 1px solid #a7f3d0;
+    }
+
+    .alert-error {
+      background-color: #fee2e2;
+      color: var(--danger-red);
+      border: 1px solid #fecaca;
+    }
+
     .form-group {
       margin-bottom: 1.25rem;
     }
@@ -135,7 +157,6 @@
       box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.15);
     }
 
-    /* Catalogue Repeater Section */
     .catalogue-wrapper {
       background: var(--bg-light);
       border: 1px solid var(--border-color);
@@ -195,7 +216,6 @@
       cursor: pointer;
       font-weight: 700;
       font-size: 0.9rem;
-      transition: background 0.2s;
     }
 
     .btn-remove:hover {
@@ -214,7 +234,6 @@
       font-size: 0.9rem;
       cursor: pointer;
       margin-top: 0.5rem;
-      transition: background 0.2s;
     }
 
     .btn-add-row:hover {
@@ -252,7 +271,6 @@
       }
 
       .btn-remove {
-        justify-self: start;
         width: 100%;
       }
 
@@ -261,7 +279,7 @@
         gap: 0.75rem;
         align-items: flex-start;
       }
-      
+
       .form-box {
         padding: 1.25rem;
       }
@@ -286,7 +304,9 @@
         <p>Register your company profile and build your multi-product catalogue for B2B buyers.</p>
       </div>
 
-      <form id="sellerForm" onsubmit="handleSellerSubmit(event)">
+      <div id="statusAlert" class="alert-box"></div>
+
+      <form id="sellerForm">
         <div class="form-group">
           <label>Business / Company Name *</label>
           <input type="text" id="bizName" required placeholder="e.g. Royal Precision Tools">
@@ -366,10 +386,20 @@
       }
     }
 
-    async function handleSellerSubmit(e) {
+    function showAlert(message, isSuccess = true) {
+      const alertBox = document.getElementById("statusAlert");
+      alertBox.className = `alert-box ${isSuccess ? 'alert-success' : 'alert-error'}`;
+      alertBox.innerHTML = message;
+      alertBox.style.display = "block";
+      alertBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.getElementById("sellerForm").addEventListener("submit", async function(e) {
       e.preventDefault();
+      e.stopPropagation();
+
       const submitBtn = document.getElementById("submitBtn");
-      submitBtn.innerText = "Submitting to Google Sheets...";
+      submitBtn.innerText = "Submitting...";
       submitBtn.disabled = true;
 
       const catalogue = [];
@@ -405,16 +435,15 @@
           body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
         });
 
-        alert("Business & Catalogue published successfully! Redirecting to directory...");
+        showAlert(`✓ Business & Catalogue successfully published! <br><a href="index.html" style="color: var(--navy-accent); font-weight: bold; text-decoration: underline;">Click here to view live directory</a>`, true);
         document.getElementById("sellerForm").reset();
-        window.location.href = "index.html";
       } catch (err) {
-        alert("Failed to connect. Please verify your Google Sheet deployment.");
+        showAlert("Failed to connect to Google Sheets. Please check permissions.", false);
       } finally {
         submitBtn.innerText = "Publish Business & Catalogue";
         submitBtn.disabled = false;
       }
-    }
+    });
   </script>
 </body>
 </html>
