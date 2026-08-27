@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seller Portal | List Your Business on OfbuzzMart</title>
+  <title>Seller Portal | List Your Business & Products</title>
   <style>
     :root {
       --bg-white: #ffffff;
@@ -15,18 +15,8 @@
       --border-color: #e2e8f0;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-white);
-      color: var(--text-main);
-      line-height: 1.5;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.5; }
 
     header {
       background-color: var(--navy-primary);
@@ -40,16 +30,8 @@
       z-index: 100;
     }
 
-    .brand-logo {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #ffffff;
-      text-decoration: none;
-    }
-
-    .brand-logo span {
-      color: #60a5fa;
-    }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
+    .brand-logo span { color: #60a5fa; }
 
     nav a {
       color: #ffffff;
@@ -60,64 +42,55 @@
       font-weight: 600;
       margin-left: 0.5rem;
     }
+    nav a:hover, nav a.active { background-color: var(--navy-accent); border-color: var(--navy-accent); }
 
-    nav a:hover, nav a.active {
-      background-color: var(--navy-accent);
-      border-color: var(--navy-accent);
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .form-box {
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 2rem;
-      background: var(--bg-white);
-    }
-
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.35rem;
-      font-weight: 600;
-    }
-
+    .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+    .form-box { border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; background: var(--bg-white); }
+    
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; margin-bottom: 0.35rem; font-weight: 600; }
     .form-group input, .form-group textarea {
-      width: 100%;
+      width: 100%; padding: 0.75rem; border: 1px solid var(--border-color);
+      border-radius: 4px; font-size: 1rem; color: var(--text-main);
+    }
+    .form-group input:focus, .form-group textarea:focus { outline: 2px solid var(--navy-accent); }
+
+    /* Catalogue Repeater */
+    .catalogue-section {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .product-row {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 2fr auto;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      background: #ffffff;
       padding: 0.75rem;
       border: 1px solid var(--border-color);
       border-radius: 4px;
-      font-size: 1rem;
-      color: var(--text-main);
+    }
+    .product-row input { padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; }
+    .btn-remove-row {
+      background: #991b1b; color: #fff; border: none; padding: 0.5rem 0.75rem;
+      border-radius: 4px; cursor: pointer; font-weight: bold;
     }
 
-    .form-group input:focus, .form-group textarea:focus {
-      outline: 2px solid var(--navy-accent);
+    .btn-add-product {
+      background: transparent; color: var(--navy-accent); border: 2px dashed var(--navy-accent);
+      padding: 0.6rem; width: 100%; border-radius: 4px; font-weight: 700; cursor: pointer;
     }
+    .btn-add-product:hover { background: #e0f2fe; }
 
-    .btn {
-      display: block;
-      width: 100%;
-      background-color: var(--navy-primary);
-      color: #ffffff;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
+    .btn-submit {
+      display: block; width: 100%; background-color: var(--navy-primary); color: #ffffff;
+      padding: 0.85rem; border: none; border-radius: 4px; font-weight: 700; font-size: 1.05rem; cursor: pointer;
     }
-
-    .btn:hover {
-      background-color: var(--navy-accent);
-    }
+    .btn-submit:hover { background-color: var(--navy-accent); }
   </style>
 </head>
 <body>
@@ -127,23 +100,23 @@
     <nav>
       <a href="index.html">Directory</a>
       <a href="seller.html" class="active">Seller Portal</a>
-      <a href="Master.html">Admin</a>
+      <a href="Master.html">Master Panel</a>
     </nav>
   </header>
 
   <div class="container">
     <div class="form-box">
-      <h2 style="color: var(--navy-primary); margin-bottom: 0.5rem;">List Your Business</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Submit your company details and catalogue for direct B2B inquiries.</p>
+      <h2 style="color: var(--navy-primary); margin-bottom: 0.25rem;">Seller Registration & Catalogue</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Register your business and list multiple products with photos directly.</p>
       
       <form id="sellerForm" onsubmit="handleSellerSubmit(event)">
         <div class="form-group">
-          <label>Business / Company Name *</label>
-          <input type="text" id="bizName" required placeholder="e.g. GemHub Jewels">
+          <label>Company / Business Name *</label>
+          <input type="text" id="bizName" required placeholder="e.g. Royal Silver & Tools">
         </div>
         <div class="form-group">
           <label>Business Category *</label>
-          <input type="text" id="bizCategory" required placeholder="e.g. Silver Jewelry Wholesale, Hardware Supply">
+          <input type="text" id="bizCategory" required placeholder="e.g. Silver Wholesale, Industrial Tools">
         </div>
         <div class="form-group">
           <label>Operating City & Address *</label>
@@ -154,18 +127,35 @@
           <input type="tel" id="bizContact" required placeholder="+91 9811002233">
         </div>
         <div class="form-group">
-          <label>Photo / Logo Image URL</label>
+          <label>Main Cover / Logo URL</label>
           <input type="url" id="bizImage" placeholder="https://images.unsplash.com/photo-...">
         </div>
         <div class="form-group">
-          <label>About Company & Offerings</label>
-          <textarea id="bizAbout" rows="3" placeholder="Provide wholesale minimums, product categories, capabilities..."></textarea>
+          <label>Company Overview & Bio</label>
+          <textarea id="bizAbout" rows="3" placeholder="Provide details on wholesale pricing, MOQ, services..."></textarea>
         </div>
-        <div class="form-group">
-          <label>Initial Catalogue Product (Title & Price)</label>
-          <input type="text" id="bizProduct" placeholder="e.g. Silver Ring 925 - ₹450/gram">
+
+        <!-- Dynamic Product Items -->
+        <div class="catalogue-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h4 style="color: var(--navy-primary);">Product & Service Catalogue</h4>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Add all your products</span>
+          </div>
+
+          <div id="productContainer">
+            <!-- Initial Row -->
+            <div class="product-row">
+              <input type="text" placeholder="Product Name *" class="p-name" required>
+              <input type="text" placeholder="Price (e.g. ₹450)" class="p-price" required>
+              <input type="url" placeholder="Photo URL" class="p-img">
+              <button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn-add-product" onclick="addProductRow()">+ Add Another Product</button>
         </div>
-        <button type="submit" id="submitBtn" class="btn">Submit Business Listing</button>
+
+        <button type="submit" id="submitBtn" class="btn-submit">Publish Business & Catalogue</button>
       </form>
     </div>
   </div>
@@ -173,47 +163,75 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
 
+    function addProductRow() {
+      const container = document.getElementById("productContainer");
+      const row = document.createElement("div");
+      row.className = "product-row";
+      row.innerHTML = `
+        <input type="text" placeholder="Product Name *" class="p-name" required>
+        <input type="text" placeholder="Price (e.g. ₹450)" class="p-price" required>
+        <input type="url" placeholder="Photo URL" class="p-img">
+        <button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button>
+      `;
+      container.appendChild(row);
+    }
+
+    function removeRow(btn) {
+      const rows = document.querySelectorAll(".product-row");
+      if (rows.length > 1) {
+        btn.closest(".product-row").remove();
+      } else {
+        alert("At least one product item is required.");
+      }
+    }
+
     async function handleSellerSubmit(e) {
       e.preventDefault();
       const submitBtn = document.getElementById("submitBtn");
       submitBtn.innerText = "Submitting to Google Sheets...";
       submitBtn.disabled = true;
 
+      // Extract all catalogue rows
+      const catalogue = [];
+      document.querySelectorAll(".product-row").forEach(row => {
+        const name = row.querySelector(".p-name").value.trim();
+        const price = row.querySelector(".p-price").value.trim();
+        const img = row.querySelector(".p-img").value.trim();
+        if (name) {
+          catalogue.push({
+            name: name,
+            price: price || "Quote on Request",
+            img: img || "https://via.placeholder.com/300x200?text=" + encodeURIComponent(name)
+          });
+        }
+      });
+
       const newEntry = {
         id: "ofb-" + Date.now(),
-        name: document.getElementById("bizName").value,
-        category: document.getElementById("bizCategory").value,
-        location: document.getElementById("bizLocation").value,
-        contact: document.getElementById("bizContact").value,
-        image: document.getElementById("bizImage").value || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
-        about: document.getElementById("bizAbout").value,
-        catalogue: []
+        name: document.getElementById("bizName").value.trim(),
+        category: document.getElementById("bizCategory").value.trim(),
+        location: document.getElementById("bizLocation").value.trim(),
+        contact: document.getElementById("bizContact").value.trim(),
+        image: document.getElementById("bizImage").value.trim() || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
+        about: document.getElementById("bizAbout").value.trim(),
+        catalogue: catalogue
       };
-
-      const productField = document.getElementById("bizProduct").value;
-      if (productField) {
-        newEntry.catalogue.push({
-          name: productField,
-          price: "Inquire for Quote",
-          img: newEntry.image
-        });
-      }
 
       try {
         await fetch(SCRIPT_URL, {
           method: "POST",
           mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
         });
 
-        alert("Business listed successfully! It is now stored in Google Sheets.");
+        alert("Business & Catalogue successfully published to Google Sheets!");
         document.getElementById("sellerForm").reset();
         window.location.href = "index.html";
       } catch (err) {
-        alert("Failed to submit. Please check connection.");
+        alert("Failed to submit. Please verify connection.");
       } finally {
-        submitBtn.innerText = "Submit Business Listing";
+        submitBtn.innerText = "Publish Business & Catalogue";
         submitBtn.disabled = false;
       }
     }
