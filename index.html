@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OfbuzzMart | B2B Business Directory & Catalogue</title>
+  <title>OfbuzzMart | Global B2B Directory & Catalogue</title>
   <style>
     :root {
       --bg-white: #ffffff;
@@ -16,51 +16,63 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.5; }
+    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
 
     header {
       background-color: var(--navy-primary);
       color: #ffffff;
-      padding: 1rem 2rem;
+      padding: 1.25rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
     }
 
-    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; letter-spacing: -0.5px; }
     .brand-logo span { color: #60a5fa; }
 
     nav a {
       color: #ffffff;
       text-decoration: none;
-      border: 1px solid #ffffff;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+      background-color: var(--navy-accent);
+      padding: 0.55rem 1.1rem;
+      border-radius: 6px;
       font-weight: 600;
-      margin-left: 0.5rem;
+      font-size: 0.9rem;
       transition: background 0.2s;
     }
-    nav a:hover, nav a.active { background-color: var(--navy-accent); border-color: var(--navy-accent); }
+    nav a:hover { background-color: #172554; }
 
-    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-    .search-container { margin-bottom: 2rem; }
+    .hero-section {
+      background-color: var(--bg-light);
+      border-bottom: 1px solid var(--border-color);
+      padding: 3.5rem 1rem;
+      text-align: center;
+    }
+    .hero-section h1 { font-size: 2.25rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.5rem; }
+    .hero-section p { color: var(--text-muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+    
+    .search-container { margin: -1.8rem auto 2.5rem auto; max-width: 700px; position: relative; }
     .search-input {
       width: 100%;
-      padding: 0.85rem 1rem;
+      padding: 1rem 1.25rem;
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 1rem;
-      color: var(--text-main);
+      background: #ffffff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
     .search-input:focus { outline: 2px solid var(--navy-accent); }
 
     .business-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
     }
 
     .card {
@@ -70,121 +82,42 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.25s ease;
     }
-    .card:hover { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
+    .card:hover { box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08); transform: translateY(-3px); }
     .card.sponsored { border: 2px solid var(--navy-accent); }
 
-    .card-banner {
-      height: 180px;
-      background-color: var(--bg-light);
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
+    .card-banner { height: 190px; width: 100%; background: var(--bg-light); background-size: cover; background-position: center; position: relative; }
+    .badge-sponsored { position: absolute; top: 12px; right: 12px; background: var(--navy-primary); color: #fff; padding: 0.25rem 0.6rem; font-size: 0.7rem; font-weight: 700; border-radius: 4px; text-transform: uppercase; }
+    .badge-verified { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; font-size: 0.75rem; font-weight: 700; border-radius: 4px; display: inline-block; margin-bottom: 0.5rem; }
 
-    .badge-sponsored {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--navy-primary);
-      color: #ffffff;
-      padding: 0.25rem 0.6rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-
-    .badge-verified {
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 0.2rem 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: 4px;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+    .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
     .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .card-category { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; }
-    .card-description { font-size: 0.9rem; margin-bottom: 1rem; flex: 1; }
-    .card-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .card-category { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .card-description { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1.2rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem; border-top: 1px solid var(--border-color); paddingTop: 0.75rem; }
 
     .btn {
-      display: block;
-      text-align: center;
-      background-color: var(--navy-primary);
-      color: #ffffff;
-      padding: 0.6rem 1.2rem;
-      border-radius: 4px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      border: none;
-      width: 100%;
+      display: block; text-align: center; background-color: var(--navy-primary); color: #fff;
+      padding: 0.75rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; border: none; width: 100%; transition: background 0.2s;
     }
     .btn:hover { background-color: var(--navy-accent); }
-    .btn-secondary {
-      background-color: transparent;
-      color: var(--navy-primary);
-      border: 1px solid var(--navy-primary);
-      margin-top: 0.5rem;
-    }
+    .btn-secondary { background-color: transparent; color: var(--navy-primary); border: 1px solid var(--navy-primary); margin-top: 0.5rem; }
     .btn-secondary:hover { background-color: var(--bg-light); color: var(--navy-accent); }
 
-    /* Catalogue Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 200;
-      overflow-y: auto;
-    }
-    .modal-content {
-      background: var(--bg-white);
-      max-width: 850px;
-      margin: 3rem auto;
-      padding: 2rem;
-      border-radius: 8px;
-      position: relative;
-    }
-    .close-modal {
-      position: absolute;
-      top: 1rem; right: 1.5rem;
-      font-size: 1.75rem;
-      cursor: pointer;
-      font-weight: 700;
-    }
+    /* Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); z-index: 200; overflow-y: auto; padding: 2rem 1rem; }
+    .modal-content { background: var(--bg-white); max-width: 850px; margin: 2rem auto; padding: 2.5rem; border-radius: 12px; position: relative; }
+    .close-modal { position: absolute; top: 1.25rem; right: 1.75rem; font-size: 1.75rem; cursor: pointer; font-weight: 700; }
 
-    .catalogue-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .catalogue-card {
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      overflow: hidden;
-      background: var(--bg-light);
-      display: flex;
-      flex-direction: column;
-    }
-    .catalogue-card img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      background: #e2e8f0;
-    }
-    .catalogue-card-content { padding: 0.75rem; }
-    .catalogue-card-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .catalogue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.25rem; margin-top: 1rem; }
+    .catalogue-card { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-light); display: flex; flex-direction: column; }
+    .catalogue-card img { width: 100%; height: 140px; object-fit: cover; }
+    .catalogue-card-content { padding: 0.85rem; }
+    .catalogue-card-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
     .catalogue-card-price { color: var(--navy-accent); font-weight: 800; font-size: 0.9rem; }
 
-    .loader { text-align: center; padding: 3rem; color: var(--navy-accent); font-weight: 600; font-size: 1.1rem; }
+    .loader { text-align: center; padding: 4rem 1rem; color: var(--navy-accent); font-weight: 600; font-size: 1.1rem; }
   </style>
 </head>
 <body>
@@ -192,22 +125,24 @@
   <header>
     <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
     <nav>
-      <a href="index.html" class="active">Directory</a>
-      <a href="seller.html">Seller Portal</a>
-      <a href="Master.html">Master Panel</a>
+      <a href="seller.html">Seller Portal & Login</a>
     </nav>
   </header>
 
+  <div class="hero-section">
+    <h1>B2B Wholesale Directory & Catalogue</h1>
+    <p>Discover verified suppliers, manufacturers, and trade partners across India.</p>
+  </div>
+
   <div class="container">
     <div class="search-container">
-      <input type="text" id="searchInput" class="search-input" placeholder="Search businesses, items, categories, or cities..." onkeyup="filterDirectory()">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search by business name, category, or city..." onkeyup="filterDirectory()">
     </div>
 
-    <div id="loader" class="loader">Fetching live businesses from Google Sheets...</div>
+    <div id="loader" class="loader">Loading verified businesses...</div>
     <div id="businessList" class="business-grid"></div>
   </div>
 
-  <!-- Catalogue Profile Modal -->
   <div id="bizModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -219,26 +154,32 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
     let businesses = [];
 
+    function loadData() {
+      const loader = document.getElementById("loader");
+      loader.style.display = "block";
+
+      const script = document.createElement("script");
+      const callbackName = "handleDirectoryData_" + Date.now();
+      
+      window[callbackName] = function(data) {
+        businesses = Array.isArray(data) ? data : [];
+        loader.style.display = "none";
+        renderDirectory();
+        delete window[callbackName];
+        script.remove();
+      };
+
+      script.src = `${SCRIPT_URL}?callback=${callbackName}`;
+      script.onerror = function() {
+        loader.innerText = "Error loading directory. Please check Google Sheet deployment.";
+      };
+
+      document.body.appendChild(script);
+    }
+
     function cleanPhone(phone) {
       if (!phone) return "";
       return String(phone).replace(/[^0-9+]/g, '');
-    }
-
-    function cleanDigitsOnly(phone) {
-      if (!phone) return "";
-      return String(phone).replace(/[^0-9]/g, '');
-    }
-
-    async function loadData() {
-      const loader = document.getElementById("loader");
-      try {
-        const res = await fetch(SCRIPT_URL);
-        businesses = await res.json();
-        if (loader) loader.style.display = "none";
-        renderDirectory();
-      } catch (err) {
-        if (loader) loader.innerText = "Error loading directory. Please verify Apps Script deployment.";
-      }
     }
 
     function renderDirectory(filter = "") {
@@ -246,7 +187,6 @@
       container.innerHTML = "";
 
       const sorted = [...businesses].sort((a, b) => (b.isSponsored ? 1 : 0) - (a.isSponsored ? 1 : 0));
-
       const filtered = sorted.filter(b => 
         (b.name || "").toLowerCase().includes(filter.toLowerCase()) ||
         (b.category || "").toLowerCase().includes(filter.toLowerCase()) ||
@@ -254,7 +194,7 @@
       );
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No businesses found.</p>`;
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 4rem;">No businesses listed yet. Visit Seller Portal to add your business.</p>`;
         return;
       }
 
@@ -263,17 +203,17 @@
         const card = document.createElement("div");
         card.className = `card ${b.isSponsored ? "sponsored" : ""}`;
         card.innerHTML = `
-          <div class="card-banner" style="background-image: url('${b.image || 'https://via.placeholder.com/600x300?text=OfbuzzMart+Business'}')">
+          <div class="card-banner" style="background-image: url('${b.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80'}')">
             ${b.isSponsored ? `<span class="badge-sponsored">Featured Sponsor</span>` : ""}
           </div>
           <div class="card-body">
             ${b.isVerified ? `<span class="badge-verified">✓ Verified Supplier</span>` : ""}
             <h3 class="card-title">${b.name || "Untitled"}</h3>
             <div class="card-category">${b.category || "General"}</div>
-            <p class="card-description">${(b.about || "").substring(0, 110)}${(b.about || "").length > 110 ? '...' : ''}</p>
-            <div class="card-meta">📍 ${b.location || "N/A"} | 📞 ${b.contact || "N/A"}</div>
-            <button class="btn" onclick="openProfile('${b.id}')">View Company & Catalogue (${(b.catalogue || []).length})</button>
-            ${safePhone ? `<a href="tel:${safePhone}" class="btn btn-secondary">Call Supplier</a>` : `<button class="btn btn-secondary" disabled>No Contact</button>`}
+            <p class="card-description">${b.about || "No description provided."}</p>
+            <div class="card-meta">📍 ${b.location || "N/A"}<br>📞 ${b.contact || "N/A"}</div>
+            <button class="btn" onclick="openProfile('${b.id}')">View Catalogue (${(b.catalogue || []).length} items)</button>
+            ${safePhone ? `<a href="tel:${safePhone}" class="btn btn-secondary">Call Supplier</a>` : `<button class="btn btn-secondary" disabled>No Phone</button>`}
           </div>
         `;
         container.appendChild(card);
@@ -288,33 +228,33 @@
       const b = businesses.find(item => item.id === id);
       if (!b) return;
 
-      const digits = cleanDigitsOnly(b.contact);
+      const digits = cleanPhone(b.contact).replace(/[^0-9]/g, '');
       const modalBody = document.getElementById("modalBody");
 
       modalBody.innerHTML = `
-        <h2>${b.name || "Business Profile"}</h2>
-        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">${b.category || ""} • 📍 ${b.location || ""}</p>
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.25rem;">${b.name || "Business Profile"}</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 1rem;">${b.category || ""} • 📍 ${b.location || ""}</p>
         <hr style="margin: 1rem 0; border: 0; border-top: 1px solid var(--border-color);" />
         
-        <h4 style="margin-bottom: 0.5rem;">About the Company</h4>
-        <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">${b.about || "No detailed description provided."}</p>
+        <h4 style="margin-bottom: 0.5rem; color: var(--navy-primary);">About Company</h4>
+        <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--text-muted);">${b.about || "No detailed description."}</p>
         
-        <h4 style="margin-bottom: 0.5rem;">Product & Service Catalogue</h4>
+        <h4 style="margin-bottom: 0.5rem; color: var(--navy-primary);">Product & Service Catalogue</h4>
         <div class="catalogue-grid">
           ${b.catalogue && b.catalogue.length ? b.catalogue.map(p => `
             <div class="catalogue-card">
-              <img src="${p.img || 'https://via.placeholder.com/300x200?text=Product'}" alt="${p.name}">
+              <img src="${p.img || 'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80'}" alt="${p.name || 'Product'}">
               <div class="catalogue-card-content">
                 <div class="catalogue-card-title">${p.name || "Item"}</div>
-                <div class="catalogue-card-price">${p.price || "Contact for Price"}</div>
+                <div class="catalogue-card-price">${p.price || "Inquire"}</div>
               </div>
             </div>
-          `).join("") : `<p style="font-size: 0.85rem; color: var(--text-muted); grid-column: 1/-1;">No catalogue items uploaded yet.</p>`}
+          `).join("") : `<p style="font-size: 0.9rem; color: var(--text-muted); grid-column: 1/-1;">No catalogue items uploaded yet.</p>`}
         </div>
         
-        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-          ${digits ? `<a href="https://wa.me/${digits}" target="_blank" class="btn" style="flex: 1;">Chat on WhatsApp</a>` : ""}
-          <button class="btn btn-secondary" onclick="closeModal()" style="width: auto; margin-top: 0;">Close</button>
+        <div style="margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          ${digits ? `<a href="https://wa.me/${digits}" target="_blank" class="btn" style="flex: 1; min-width: 200px;">Chat on WhatsApp</a>` : ""}
+          <button class="btn btn-secondary" onclick="closeModal()" style="width: auto; min-width: 120px; margin-top: 0;">Close</button>
         </div>
       `;
 
