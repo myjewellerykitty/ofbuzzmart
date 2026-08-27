@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seller Portal & Management | OfbuzzMart</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
       --bg-white: #ffffff;
@@ -83,38 +84,28 @@
 
     .view-panel { display: none; }
     .view-panel.active { display: block; }
-
-    @media(max-width: 650px) {
-      .product-row { grid-template-columns: 1fr; }
-      .panel-card { padding: 1.5rem; }
-    }
   </style>
 </head>
 <body>
 
   <header>
     <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
-    <nav>
-      <a href="index.html">View Directory</a>
-    </nav>
+    <nav><a href="index.html">View Directory</a></nav>
   </header>
 
   <div class="container">
-
     <!-- LOGIN & REGISTRATION -->
     <div id="authView" class="view-panel active">
       <div class="panel-card">
         <div class="tab-nav">
           <button class="tab-btn active" onclick="switchAuthTab('login')">Existing Seller Login</button>
-          <button class="tab-btn" onclick="switchAuthTab('register')">New Business Registration</button>
+          <button class="tab-btn" onclick="switchAuthTab('register')">New Business Registration (₹99 Fee)</button>
         </div>
 
         <div id="loginBox">
           <h2>Seller Portal Login</h2>
-          <p class="subtitle">Enter your registered Contact Number and 4-digit PIN to manage your products.</p>
-          
+          <p class="subtitle">Enter your registered Contact Number and 4-digit PIN.</p>
           <div id="loginAlert" class="alert"></div>
-
           <form onsubmit="handleLogin(event)">
             <div class="form-group"><label>Contact Number *</label><input type="tel" id="loginContact" required placeholder="+91 9811002233"></div>
             <div class="form-group"><label>4-Digit PIN *</label><input type="password" id="loginPin" maxlength="4" required placeholder="••••"></div>
@@ -125,11 +116,9 @@
 
         <div id="registerBox" style="display: none;">
           <h2>Register Your Business</h2>
-          <p class="subtitle">Create your seller profile, set a 4-digit PIN, and start listing products.</p>
-          
+          <p class="subtitle">Registration requires a one-time secure payment of <strong>₹99</strong> via Razorpay.</p>
           <div id="regAlert" class="alert"></div>
-
-          <form onsubmit="handleRegister(event)">
+          <form onsubmit="startRegistrationPayment(event)">
             <div class="form-group"><label>Business Name *</label><input type="text" id="regName" required placeholder="e.g. Acme Wholesale"></div>
             <div class="form-group"><label>Category *</label><input type="text" id="regCategory" required placeholder="e.g. Silver Jewelry, Industrial Tools"></div>
             <div class="form-group"><label>City & Address *</label><input type="text" id="regLocation" required placeholder="e.g. Gurugram, Sector 14"></div>
@@ -138,10 +127,9 @@
             <div class="form-group"><label>Set 4-Digit PIN *</label><input type="password" id="regPin" maxlength="4" required placeholder="1234"></div>
             <div class="form-group"><label>Cover Image URL</label><input type="url" id="regImage" placeholder="https://images.unsplash.com/photo-..."></div>
             <div class="form-group"><label>About Company</label><textarea id="regAbout" rows="3" placeholder="Wholesale details, MOQ, etc..."></textarea></div>
-            <button type="submit" class="btn">Register & Open Dashboard</button>
+            <button type="submit" class="btn" style="background-color: var(--success-green);">Pay ₹99 & Register Business</button>
           </form>
         </div>
-
       </div>
     </div>
 
@@ -155,9 +143,7 @@
           </div>
           <button class="btn btn-secondary" onclick="logoutSeller()" style="width: auto; padding: 0.5rem 1rem; margin-top:0;">Logout</button>
         </div>
-
         <div id="dashAlert" class="alert"></div>
-
         <form onsubmit="handleUpdateProfile(event)">
           <input type="hidden" id="editId">
           <div class="form-group"><label>Business Name *</label><input type="text" id="editName" required></div>
@@ -166,30 +152,26 @@
           <div class="form-group"><label>Registered Email *</label><input type="email" id="editEmail" required></div>
           <div class="form-group"><label>Cover Image URL</label><input type="url" id="editImage"></div>
           <div class="form-group"><label>About Company</label><textarea id="editAbout" rows="3"></textarea></div>
-          
           <div class="form-group" style="background: var(--bg-light); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
             <label>Change 4-Digit PIN (Optional)</label>
             <input type="password" id="editNewPin" maxlength="4" placeholder="Leave blank to keep current PIN">
           </div>
-
           <div class="catalogue-wrapper">
             <h3 style="margin-bottom: 1rem; color: var(--navy-primary);">Product Catalogue</h3>
             <div id="dashProductContainer"></div>
             <button type="button" class="btn-add-row" onclick="addDashProductRow()">+ Add Product</button>
           </div>
-
           <button type="submit" class="btn" id="saveDashBtn">Save All Changes</button>
         </form>
       </div>
     </div>
-
   </div>
 
-  <!-- FORGOT PIN MODAL (No Gmail Displayed) -->
+  <!-- FORGOT PIN MODAL -->
   <div id="forgotModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:300;">
     <div style="background:#fff; max-width:450px; margin: 5rem auto; padding:2rem; border-radius:10px; position:relative;">
       <h3>Recover PIN</h3>
-      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Enter your registered contact number. We will send your recovery PIN to your registered email address.</p>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Enter your registered contact number to receive your recovery PIN.</p>
       <div id="forgotAlert" class="alert"></div>
       <div class="form-group"><label>Contact Number</label><input type="tel" id="forgotContact" placeholder="+91 9811002233"></div>
       <button class="btn" onclick="sendPinEmail()">Send PIN to Email</button>
@@ -199,6 +181,7 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
+    const RAZORPAY_KEY = "rzp_test_TUnU94hn43c7rQ";
     let currentSeller = null;
     let allBusinesses = [];
 
@@ -246,17 +229,44 @@
           currentSeller = found;
           openDashboard();
         } else {
-          showMsg('loginAlert', 'Invalid Contact Number or 4-Digit PIN. Please check or use Forgot PIN.', false);
+          showMsg('loginAlert', 'Invalid Contact Number or 4-Digit PIN.', false);
         }
       });
     }
 
-    function handleRegister(e) {
+    // RAZORPAY ₹99 REGISTRATION PAYMENT
+    function startRegistrationPayment(e) {
       e.preventDefault();
-      const submitBtn = event.submitter || document.querySelector('#registerBox button[type="submit"]');
-      submitBtn.innerText = "Registering...";
-      submitBtn.disabled = true;
+      const name = document.getElementById('regName').value.trim();
+      const contact = document.getElementById('regContact').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
 
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: 9900, // ₹99 in paise
+        currency: "INR",
+        name: "OfbuzzMart",
+        description: "Business Registration Fee",
+        handler: function (response) {
+          alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+          executeRegistration(true);
+        },
+        prefill: { name: name, email: email, contact: contact },
+        theme: { color: "#0f172a" }
+      };
+
+      if (RAZORPAY_KEY === "rzp_test_TUnU94hn43c7rQ") {
+        if (confirm("Test Mode: Simulate ₹99 registration payment?")) {
+          executeRegistration(true);
+        }
+        return;
+      }
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+    async function executeRegistration(paidStatus) {
       const newEntry = {
         id: "ofb-" + Date.now(),
         name: document.getElementById('regName').value.trim(),
@@ -267,28 +277,28 @@
         pin: document.getElementById('regPin').value.trim(),
         image: document.getElementById('regImage').value.trim() || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
         about: document.getElementById('regAbout').value.trim(),
+        paidReg: paidStatus,
         catalogue: [{ name: "Sample Product", price: "₹500", img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80" }]
       };
 
-      const payload = encodeURIComponent(JSON.stringify({ action: "ADD_BUSINESS", data: newEntry }));
-      const img = new Image();
-      img.src = `${SCRIPT_URL}?data=${payload}&callback=dummyRegCb_${Date.now()}`;
-      
-      window.dummyRegCb = function() {};
-
-      setTimeout(() => {
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
+        });
         showMsg('regAlert', '✓ Registration successful! You can now log in.', true);
         document.getElementById('sellerForm')?.reset();
-        submitBtn.innerText = "Register & Open Dashboard";
-        submitBtn.disabled = false;
         setTimeout(() => switchAuthTab('login'), 1500);
-      }, 1200);
+      } catch(err) {
+        showMsg('regAlert', 'Registration error.', false);
+      }
     }
 
     function openDashboard() {
       document.getElementById('authView').classList.remove('active');
       document.getElementById('dashboardView').classList.add('active');
-
       document.getElementById('welcomeBizName').innerText = `${currentSeller.name} (${currentSeller.category})`;
       document.getElementById('editId').value = currentSeller.id;
       document.getElementById('editName').value = currentSeller.name;
@@ -320,10 +330,10 @@
       container.appendChild(row);
     }
 
-    function handleUpdateProfile(e) {
+    async function handleUpdateProfile(e) {
       e.preventDefault();
       const saveBtn = document.getElementById('saveDashBtn');
-      saveBtn.innerText = "Saving changes to Google Sheets...";
+      saveBtn.innerText = "Saving changes...";
       saveBtn.disabled = true;
 
       const catalogue = [];
@@ -341,23 +351,28 @@
         name: document.getElementById('editName').value.trim(),
         category: document.getElementById('editCategory').value.trim(),
         location: document.getElementById('editLocation').value.trim(),
-        email: document.getElementById('editName').value.trim() ? document.getElementById('editEmail').value.trim() : "",
+        email: document.getElementById('editEmail').value.trim(),
         image: document.getElementById('editImage').value.trim(),
         about: document.getElementById('editAbout').value.trim(),
         newPin: document.getElementById('editNewPin').value.trim(),
         catalogue: catalogue
       };
 
-      const payload = encodeURIComponent(JSON.stringify({ action: "UPDATE_BUSINESS", data: updatedData }));
-      const img = new Image();
-      img.src = `${SCRIPT_URL}?data=${payload}&callback=dummyUpdCb_${Date.now()}`;
-
-      setTimeout(() => {
-        showMsg('dashAlert', '✓ Profile & Catalogue successfully updated!', true);
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "UPDATE_BUSINESS", data: updatedData })
+        });
+        showMsg('dashAlert', '✓ Profile successfully updated!', true);
         currentSeller = updatedData;
+      } catch (err) {
+        showMsg('dashAlert', 'Failed to update.', false);
+      } finally {
         saveBtn.innerText = "Save All Changes to Google Sheets";
         saveBtn.disabled = false;
-      }, 1200);
+      }
     }
 
     function logoutSeller() {
@@ -376,12 +391,20 @@
         showMsg('forgotAlert', 'Please enter your contact number.', false);
         return;
       }
-
-      const payload = encodeURIComponent(JSON.stringify({ action: "SEND_PIN_EMAIL", contact: contact }));
-      const img = new Image();
-      img.src = `${SCRIPT_URL}?data=${payload}&callback=dummyPinCb_${Date.now()}`;
-
-      showMsg('forgotAlert', 'If registered, your recovery PIN has been sent to your email.', true);
+      showMsg('forgotAlert', 'Sending recovery PIN...', true);
+      const script = document.createElement("script");
+      const cbName = "pinEmailCb_" + Date.now();
+      window[cbName] = function(res) {
+        if (res && res.success) {
+          showMsg('forgotAlert', '✓ Recovery PIN sent to your email!', true);
+        } else {
+          showMsg('forgotAlert', 'Contact number not found.', false);
+        }
+        delete window[cbName];
+        script.remove();
+      };
+      script.src = `${SCRIPT_URL}?action=SEND_PIN_EMAIL&contact=${encodeURIComponent(contact)}&callback=${cbName}`;
+      document.body.appendChild(script);
     }
 
     fetchAllBusinesses();
