@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seller Portal | List Your Business & Catalogue</title>
+  <title>Seller Portal & Management | OfbuzzMart</title>
   <style>
     :root {
       --bg-white: #ffffff;
@@ -17,272 +17,77 @@
       --success-green: #047857;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-white);
-      color: var(--text-main);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
 
     header {
       background-color: var(--navy-primary);
       color: #ffffff;
-      padding: 1rem 1.5rem;
+      padding: 1.25rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
     }
 
-    .brand-logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #ffffff;
-      text-decoration: none;
-      white-space: nowrap;
-    }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
+    .brand-logo span { color: #60a5fa; }
+    nav a { color: #ffffff; text-decoration: background-color var(--navy-accent); background: var(--navy-accent); padding: 0.55rem 1.1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
 
-    .brand-logo span {
-      color: #60a5fa;
-    }
-
-    nav {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: #ffffff;
-      text-decoration: none;
-      border: 1px solid #ffffff;
-      padding: 0.45rem 0.85rem;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      transition: background 0.2s;
-    }
-
-    nav a:hover, nav a.active {
-      background-color: var(--navy-accent);
-      border-color: var(--navy-accent);
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .form-box {
+    .container { max-width: 850px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    
+    .panel-card {
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 2rem;
+      border-radius: 12px;
+      padding: 2.5rem;
       background: var(--bg-white);
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+      margin-bottom: 2rem;
     }
 
-    .form-header {
-      margin-bottom: 1.5rem;
-    }
+    h2 { font-size: 1.6rem; color: var(--navy-primary); margin-bottom: 0.3rem; }
+    p.subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
 
-    .form-header h2 {
-      font-size: 1.5rem;
-      color: var(--navy-primary);
-      margin-bottom: 0.25rem;
-    }
-
-    .form-header p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .alert-box {
-      display: none;
-      padding: 1rem;
-      border-radius: 6px;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .alert-success {
-      background-color: #d1fae5;
-      color: var(--success-green);
-      border: 1px solid #a7f3d0;
-    }
-
-    .alert-error {
-      background-color: #fee2e2;
-      color: var(--danger-red);
-      border: 1px solid #fecaca;
-    }
-
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.35rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.92rem; }
     .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 0.95rem;
-      color: var(--text-main);
-      background-color: #ffffff;
-      transition: border-color 0.2s;
+      width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color);
+      border-radius: 8px; font-size: 0.95rem; color: var(--text-main); background: #ffffff;
     }
+    .form-group input:focus, .form-group textarea:focus { outline: 2px solid var(--navy-accent); }
 
-    .form-group input:focus, .form-group textarea:focus {
-      outline: none;
-      border-color: var(--navy-accent);
-      box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.15);
+    .btn {
+      display: block; width: 100%; background-color: var(--navy-primary); color: #ffffff;
+      padding: 0.85rem; border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s;
     }
+    .btn:hover { background-color: var(--navy-accent); }
+    .btn-secondary { background: transparent; color: var(--navy-primary); border: 1px solid var(--navy-primary); margin-top: 0.75rem; }
+    .btn-secondary:hover { background: var(--bg-light); }
 
-    .catalogue-wrapper {
-      background: var(--bg-light);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin: 1.5rem 0;
-    }
+    .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.92rem; font-weight: 600; display: none; }
+    .alert-success { background: #d1fae5; color: var(--success-green); border: 1px solid #a7f3d0; }
+    .alert-error { background: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; }
 
-    .catalogue-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
+    /* Catalogue Repeater */
+    .catalogue-wrapper { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0; }
+    .product-row { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; margin-bottom: 0.75rem; display: grid; grid-template-columns: 2fr 1.5fr 2fr auto; gap: 0.5rem; align-items: center; }
+    .product-row input { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
+    .btn-remove { background: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; padding: 0.55rem 0.8rem; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn-add-row { background: transparent; color: var(--navy-accent); border: 2px dashed var(--navy-accent); padding: 0.7rem; width: 100%; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 0.5rem; }
+    
+    .tab-nav { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
+    .tab-btn { background: none; border: none; font-weight: 600; font-size: 1rem; cursor: pointer; color: var(--text-muted); }
+    .tab-btn.active { color: var(--navy-accent); border-bottom: 2px solid var(--navy-accent); padding-bottom: 0.5rem; margin-bottom: -0.8rem; }
 
-    .catalogue-header h3 {
-      font-size: 1.1rem;
-      color: var(--navy-primary);
-    }
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
 
-    .catalogue-header span {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .product-row {
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 1rem;
-      margin-bottom: 0.75rem;
-      display: grid;
-      grid-template-columns: 2fr 1.5fr 2fr auto;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .product-row input {
-      width: 100%;
-      padding: 0.6rem 0.75rem;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      font-size: 0.9rem;
-    }
-
-    .product-row input:focus {
-      outline: none;
-      border-color: var(--navy-accent);
-    }
-
-    .btn-remove {
-      background: #fee2e2;
-      color: var(--danger-red);
-      border: 1px solid #fecaca;
-      padding: 0.55rem 0.8rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .btn-remove:hover {
-      background: #fca5a5;
-    }
-
-    .btn-add-row {
-      display: block;
-      width: 100%;
-      background: transparent;
-      color: var(--navy-accent);
-      border: 2px dashed var(--navy-accent);
-      padding: 0.7rem;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      margin-top: 0.5rem;
-    }
-
-    .btn-add-row:hover {
-      background: #e0f2fe;
-    }
-
-    .btn-submit {
-      display: block;
-      width: 100%;
-      background-color: var(--navy-primary);
-      color: #ffffff;
-      padding: 0.85rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 1.5rem;
-    }
-
-    .btn-submit:hover {
-      background-color: var(--navy-accent);
-    }
-
-    .btn-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 650px) {
-      .product-row {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-      }
-
-      .btn-remove {
-        width: 100%;
-      }
-
-      header {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: flex-start;
-      }
-
-      .form-box {
-        padding: 1.25rem;
-      }
+    @media(max-width: 650px) {
+      .product-row { grid-template-columns: 1fr; }
+      .panel-card { padding: 1.5rem; }
     }
   </style>
 </head>
@@ -291,140 +96,185 @@
   <header>
     <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
     <nav>
-      <a href="index.html">Directory</a>
-      <a href="seller.html" class="active">Seller Portal</a>
-      <a href="Master.html">Master Panel</a>
+      <a href="index.html">View Directory</a>
     </nav>
   </header>
 
   <div class="container">
-    <div class="form-box">
-      <div class="form-header">
-        <h2>List Your Business & Products</h2>
-        <p>Register your company profile and build your multi-product catalogue for B2B buyers.</p>
-      </div>
 
-      <div id="statusAlert" class="alert-box"></div>
-
-      <form id="sellerForm">
-        <div class="form-group">
-          <label>Business / Company Name *</label>
-          <input type="text" id="bizName" required placeholder="e.g. Royal Precision Tools">
+    <!-- VIEW 1: LOGIN & REGISTRATION SELECTION -->
+    <div id="authView" class="view-panel active">
+      <div class="panel-card">
+        <div class="tab-nav">
+          <button class="tab-btn active" onclick="switchAuthTab('login')">Existing Seller Login</button>
+          <button class="tab-btn" onclick="switchAuthTab('register')">New Business Registration</button>
         </div>
 
-        <div class="form-group">
-          <label>Business Category *</label>
-          <input type="text" id="bizCategory" required placeholder="e.g. Industrial Machinery, Silver Wholesale, Electronics">
-        </div>
+        <div id="loginBox">
+          <h2>Seller Portal Login</h2>
+          <p class="subtitle">Enter your registered Contact Number and 4-digit PIN to manage your products.</p>
+          
+          <div id="loginAlert" class="alert"></div>
 
-        <div class="form-group">
-          <label>Operating City & Address *</label>
-          <input type="text" id="bizLocation" required placeholder="e.g. Gurugram, Delhi NCR">
-        </div>
-
-        <div class="form-group">
-          <label>Contact Phone / WhatsApp *</label>
-          <input type="tel" id="bizContact" required placeholder="+91 9811002233">
-        </div>
-
-        <div class="form-group">
-          <label>Main Cover / Logo Image URL</label>
-          <input type="url" id="bizImage" placeholder="https://images.unsplash.com/photo-...">
-        </div>
-
-        <div class="form-group">
-          <label>Company Overview & Bio</label>
-          <textarea id="bizAbout" rows="3" placeholder="Describe wholesale capabilities, minimum order quantities (MOQ), and services..."></textarea>
-        </div>
-
-        <!-- Dynamic Product Rows -->
-        <div class="catalogue-wrapper">
-          <div class="catalogue-header">
-            <h3>Product & Service Catalogue</h3>
-            <span>Add multiple products</span>
-          </div>
-
-          <div id="productContainer">
-            <div class="product-row">
-              <input type="text" placeholder="Product Title *" class="p-name" required>
-              <input type="text" placeholder="Price (e.g. ₹1,200/unit)" class="p-price" required>
-              <input type="url" placeholder="Product Image URL" class="p-img">
-              <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+          <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label>Contact Number *</label>
+              <input type="tel" id="loginContact" required placeholder="+91 9811002233">
             </div>
-          </div>
-
-          <button type="button" class="btn-add-row" onclick="addProductRow()">+ Add Another Product</button>
+            <div class="form-group">
+              <label>4-Digit PIN *</label>
+              <input type="password" id="loginPin" maxlength="4" required placeholder="••••">
+            </div>
+            <button type="submit" class="btn">Access Dashboard</button>
+            <button type="button" class="btn btn-secondary" onclick="openForgotPinModal()">Forgot PIN? (Recover via Email)</button>
+          </form>
         </div>
 
-        <button type="submit" id="submitBtn" class="btn-submit">Publish Business & Catalogue</button>
-      </form>
+        <div id="registerBox" style="display: none;">
+          <h2>Register Your Business</h2>
+          <p class="subtitle">Create your seller profile, set a 4-digit PIN, and start listing products.</p>
+          
+          <div id="regAlert" class="alert"></div>
+
+          <form onsubmit="handleRegister(event)">
+            <div class="form-group"><label>Business Name *</label><input type="text" id="regName" required placeholder="e.g. Acme Wholesale"></div>
+            <div class="form-group"><label>Category *</label><input type="text" id="regCategory" required placeholder="e.g. Silver Jewelry, Industrial Tools"></div>
+            <div class="form-group"><label>City & Address *</label><input type="text" id="regLocation" required placeholder="e.g. Gurugram, Sector 14"></div>
+            <div class="form-group"><label>Contact Phone / WhatsApp *</label><input type="tel" id="regContact" required placeholder="+91 9811002233"></div>
+            <div class="form-group"><label>Registered Email (For PIN Recovery) *</label><input type="email" id="regEmail" required placeholder="you@company.com"></div>
+            <div class="form-group"><label>Set 4-Digit PIN *</label><input type="password" id="regPin" maxlength="4" required placeholder="1234"></div>
+            <div class="form-group"><label>Cover Image URL</label><input type="url" id="regImage" placeholder="https://images.unsplash.com/photo-..."></div>
+            <div class="form-group"><label>About Company</label><textarea id="regAbout" rows="3" placeholder="Wholesale details, MOQ, etc..."></textarea></div>
+            <button type="submit" class="btn">Register & Open Dashboard</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW 2: DASHBOARD (EDIT PROFILE & PRODUCTS) -->
+    <div id="dashboardView" class="view-panel">
+      <div class="panel-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2>Seller Management Console</h2>
+            <p class="subtitle" id="welcomeBizName">Managing Catalogue & Profile</p>
+          </div>
+          <button class="btn btn-secondary" onclick="logoutSeller()" style="width: auto; padding: 0.5rem 1rem; margin-top:0;">Logout</button>
+        </div>
+
+        <div id="dashAlert" class="alert"></div>
+
+        <form onsubmit="handleUpdateProfile(event)">
+          <input type="hidden" id="editId">
+          <div class="form-group"><label>Business Name *</label><input type="text" id="editName" required></div>
+          <div class="form-group"><label>Category *</label><input type="text" id="editCategory" required></div>
+          <div class="form-group"><label>Location *</label><input type="text" id="editLocation" required></div>
+          <div class="form-group"><label>Registered Email *</label><input type="email" id="editEmail" required></div>
+          <div class="form-group"><label>Cover Image URL</label><input type="url" id="editImage"></div>
+          <div class="form-group"><label>About Company</label><textarea id="editAbout" rows="3"></textarea></div>
+          
+          <div class="form-group" style="background: var(--bg-light); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <label>Change 4-Digit PIN (Optional)</label>
+            <input type="password" id="editNewPin" maxlength="4" placeholder="Leave blank to keep current PIN">
+          </div>
+
+          <!-- Catalogue Builder -->
+          <div class="catalogue-wrapper">
+            <h3 style="margin-bottom: 1rem; color: var(--navy-primary);">Product Catalogue</h3>
+            <div id="dashProductContainer"></div>
+            <button type="button" class="btn-add-row" onclick="addDashProductRow()">+ Add Product</button>
+          </div>
+
+          <button type="submit" class="btn" id="saveDashBtn">Save All Changes to Google Sheets</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FORGOT PIN MODAL -->
+  <div id="forgotModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:300;">
+    <div style="background:#fff; max-width:450px; margin: 5rem auto; padding:2rem; border-radius:10px; position:relative;">
+      <h3>Recover PIN via Email</h3>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Enter your registered contact number. We will send your PIN from <strong>dreambuzz01@gmail.com</strong>.</p>
+      <div id="forgotAlert" class="alert"></div>
+      <div class="form-group"><label>Contact Number</label><input type="tel" id="forgotContact" placeholder="+91 9811002233"></div>
+      <button class="btn" onclick="sendPinEmail()">Send PIN to Email</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('forgotModal').style.display='none'">Cancel</button>
     </div>
   </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
+    let currentSeller = null;
+    let allBusinesses = [];
 
-    function addProductRow() {
-      const container = document.getElementById("productContainer");
-      const row = document.createElement("div");
-      row.className = "product-row";
-      row.innerHTML = `
-        <input type="text" placeholder="Product Title *" class="p-name" required>
-        <input type="text" placeholder="Price (e.g. ₹1,200/unit)" class="p-price" required>
-        <input type="url" placeholder="Product Image URL" class="p-img">
-        <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
-      `;
-      container.appendChild(row);
+    // Pre-fetch businesses for instant login verification
+    function fetchAllBusinesses(callback) {
+      const script = document.createElement("script");
+      const cbName = "fetchBiz_" + Date.now();
+      window[cbName] = function(data) {
+        allBusinesses = Array.isArray(data) ? data : [];
+        if (callback) callback(allBusinesses);
+        delete window[cbName];
+        script.remove();
+      };
+      script.src = `${SCRIPT_URL}?callback=${cbName}`;
+      document.body.appendChild(script);
     }
 
-    function removeRow(btn) {
-      const rows = document.querySelectorAll(".product-row");
-      if (rows.length > 1) {
-        btn.closest(".product-row").remove();
+    function switchAuthTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (tab === 'login') {
+        event.target.classList.add('active');
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('registerBox').style.display = 'none';
       } else {
-        alert("At least one product item is required in your catalogue.");
+        event.target.classList.add('active');
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('registerBox').style.display = 'block';
       }
     }
 
-    function showAlert(message, isSuccess = true) {
-      const alertBox = document.getElementById("statusAlert");
-      alertBox.className = `alert-box ${isSuccess ? 'alert-success' : 'alert-error'}`;
-      alertBox.innerHTML = message;
-      alertBox.style.display = "block";
-      alertBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    function showMsg(elementId, text, isSuccess) {
+      const el = document.getElementById(elementId);
+      el.className = `alert ${isSuccess ? 'alert-success' : 'alert-error'}`;
+      el.innerHTML = text;
+      el.style.display = 'block';
     }
 
-    document.getElementById("sellerForm").addEventListener("submit", async function(e) {
+    // LOGIN
+    function handleLogin(e) {
       e.preventDefault();
-      e.stopPropagation();
+      const contactInput = document.getElementById('loginContact').value.trim();
+      const pinInput = document.getElementById('loginPin').value.trim();
 
-      const submitBtn = document.getElementById("submitBtn");
-      submitBtn.innerText = "Submitting...";
-      submitBtn.disabled = true;
-
-      const catalogue = [];
-      document.querySelectorAll(".product-row").forEach(row => {
-        const name = row.querySelector(".p-name").value.trim();
-        const price = row.querySelector(".p-price").value.trim();
-        const img = row.querySelector(".p-img").value.trim();
-        if (name) {
-          catalogue.push({
-            name: name,
-            price: price || "Quote on Request",
-            img: img || "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80"
-          });
+      fetchAllBusinesses(function(list) {
+        const found = list.find(b => String(b.contact).trim() === contactInput && String(b.pin).trim() === pinInput);
+        if (found) {
+          currentSeller = found;
+          openDashboard();
+        } else {
+          showMsg('loginAlert', 'Invalid Contact Number or 4-Digit PIN. Please check or use Forgot PIN.', false);
         }
       });
+    }
 
+    // REGISTER
+    async function handleRegister(e) {
+      e.preventDefault();
       const newEntry = {
         id: "ofb-" + Date.now(),
-        name: document.getElementById("bizName").value.trim(),
-        category: document.getElementById("bizCategory").value.trim(),
-        location: document.getElementById("bizLocation").value.trim(),
-        contact: document.getElementById("bizContact").value.trim(),
-        image: document.getElementById("bizImage").value.trim() || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
-        about: document.getElementById("bizAbout").value.trim(),
-        catalogue: catalogue
+        name: document.getElementById('regName').value.trim(),
+        category: document.getElementById('regCategory').value.trim(),
+        location: document.getElementById('regLocation').value.trim(),
+        contact: document.getElementById('regContact').value.trim(),
+        email: document.getElementById('regEmail').value.trim(),
+        pin: document.getElementById('regPin').value.trim(),
+        image: document.getElementById('regImage').value.trim() || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
+        about: document.getElementById('regAbout').value.trim(),
+        catalogue: [{ name: "Sample Product", price: "₹500", img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80" }]
       };
 
       try {
@@ -434,16 +284,130 @@
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
         });
-
-        showAlert(`✓ Business & Catalogue successfully published! <br><a href="index.html" style="color: var(--navy-accent); font-weight: bold; text-decoration: underline;">Click here to view live directory</a>`, true);
-        document.getElementById("sellerForm").reset();
-      } catch (err) {
-        showAlert("Failed to connect to Google Sheets. Please check permissions.", false);
-      } finally {
-        submitBtn.innerText = "Publish Business & Catalogue";
-        submitBtn.disabled = false;
+        alert("Registration successful! You can now log in.");
+        document.getElementById('sellerForm')?.reset();
+        switchAuthTab('login');
+      } catch(err) {
+        showMsg('regAlert', 'Registration failed. Check network connection.', false);
       }
-    });
+    }
+
+    // OPEN DASHBOARD
+    function openDashboard() {
+      document.getElementById('authView').classList.remove('active');
+      document.getElementById('dashboardView').classList.add('active');
+
+      document.getElementById('welcomeBizName').innerText = `${currentSeller.name} (${currentSeller.category})`;
+      document.getElementById('editId').value = currentSeller.id;
+      document.getElementById('editName').value = currentSeller.name;
+      document.getElementById('editCategory').value = currentSeller.category;
+      document.getElementById('editLocation').value = currentSeller.location;
+      document.getElementById('editEmail').value = currentSeller.email || "";
+      document.getElementById('editImage').value = currentSeller.image;
+      document.getElementById('editAbout').value = currentSeller.about;
+
+      // Load catalogue items
+      const container = document.getElementById('dashProductContainer');
+      container.innerHTML = "";
+      if (currentSeller.catalogue && currentSeller.catalogue.length) {
+        currentSeller.catalogue.forEach(p => addDashProductRow(p.name, p.price, p.img));
+      } else {
+        addDashProductRow();
+      }
+    }
+
+    function addDashProductRow(name="", price="", img="") {
+      const container = document.getElementById('dashProductContainer');
+      const row = document.createElement('div');
+      row.className = 'product-row';
+      row.innerHTML = `
+        <input type="text" placeholder="Product Title *" class="p-name" value="${name}" required>
+        <input type="text" placeholder="Price (e.g. ₹450)" class="p-price" value="${price}" required>
+        <input type="url" placeholder="Image URL" class="p-img" value="${img}">
+        <button type="button" class="btn-remove" onclick="this.closest('.product-row').remove()">✕</button>
+      `;
+      container.appendChild(row);
+    }
+
+    // UPDATE PROFILE & CATALOGUE
+    async function handleUpdateProfile(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById('saveDashBtn');
+      saveBtn.innerText = "Saving changes to Google Sheets...";
+      saveBtn.disabled = true;
+
+      const catalogue = [];
+      document.querySelectorAll('.product-row').forEach(row => {
+        const name = row.querySelector('.p-name').value.trim();
+        const price = row.querySelector('.p-price').value.trim();
+        const img = row.querySelector('.p-img').value.trim();
+        if (name) {
+          catalogue.push({ name, price: price || "Quote", img: img || "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80" });
+        }
+      });
+
+      const updatedData = {
+        id: currentSeller.id,
+        name: document.getElementById('editName').value.trim(),
+        category: document.getElementById('editCategory').value.trim(),
+        location: document.getElementById('editLocation').value.trim(),
+        email: document.getElementById('editEmail').value.trim(),
+        image: document.getElementById('editImage').value.trim(),
+        about: document.getElementById('editAbout').value.trim(),
+        newPin: document.getElementById('editNewPin').value.trim(),
+        catalogue: catalogue
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "UPDATE_BUSINESS", data: updatedData })
+        });
+        showMsg('dashAlert', '✓ Profile & Catalogue successfully updated in Google Sheets!', true);
+        currentSeller = updatedData;
+      } catch (err) {
+        showMsg('dashAlert', 'Failed to update. Please check connection.', false);
+      } finally {
+        saveBtn.innerText = "Save All Changes to Google Sheets";
+        saveBtn.disabled = false;
+      }
+    }
+
+    function logoutSeller() {
+      currentSeller = null;
+      document.getElementById('dashboardView').classList.remove('active');
+      document.getElementById('authView').classList.add('active');
+    }
+
+    function openForgotPinModal() {
+      document.getElementById('forgotModal').style.display = 'block';
+    }
+
+    // FORGOT PIN VIA EMAIL
+    async function sendPinEmail() {
+      const contact = document.getElementById('forgotContact').value.trim();
+      if (!contact) {
+        showMsg('forgotAlert', 'Please enter your contact number.', false);
+        return;
+      }
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "SEND_PIN_EMAIL", contact: contact })
+        });
+        showMsg('forgotAlert', 'If registered, your PIN has been sent from dreambuzz01@gmail.com to your email.', true);
+      } catch(err) {
+        showMsg('forgotAlert', 'Error sending recovery email.', false);
+      }
+    }
+
+    // Initial cache preload
+    fetchAllBusinesses();
   </script>
 </body>
 </html>
