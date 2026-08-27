@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Master Panel | OfbuzzMart Administration</title>
-  <!-- Razorpay SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
@@ -19,241 +18,101 @@
       --danger-red: #991b1b;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-white);
-      color: var(--text-main);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.5; overflow-x: hidden; }
 
     header {
       background-color: var(--navy-primary);
       color: #ffffff;
-      padding: 1rem 1.5rem;
+      padding: 1.25rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
     }
 
-    .brand-logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #ffffff;
-      text-decoration: none;
-      white-space: nowrap;
-    }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
+    .brand-logo span { color: #60a5fa; }
 
-    .brand-logo span {
-      color: #60a5fa;
-    }
-
-    nav {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
+    nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     nav a {
       color: #ffffff;
       text-decoration: none;
-      border: 1px solid #ffffff;
-      padding: 0.45rem 0.85rem;
-      border-radius: 4px;
+      background-color: var(--navy-accent);
+      padding: 0.55rem 1.1rem;
+      border-radius: 6px;
       font-weight: 600;
       font-size: 0.9rem;
-      white-space: nowrap;
       transition: background 0.2s;
     }
+    nav a:hover { background-color: #172554; }
 
-    nav a:hover, nav a.active {
-      background-color: var(--navy-accent);
-      border-color: var(--navy-accent);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+    .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
     }
 
-    .panel-header h2 {
-      font-size: 1.5rem;
-      color: var(--navy-primary);
-      margin-bottom: 0.25rem;
-    }
-
-    .panel-header p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-card {
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 1rem;
-      background: var(--bg-light);
-    }
-
-    .stat-card .num {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--navy-primary);
-    }
-
-    .stat-card .label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
+    .panel-header h2 { font-size: 1.75rem; color: var(--navy-primary); margin-bottom: 0.25rem; }
+    .panel-header p { color: var(--text-muted); font-size: 0.95rem; }
 
     .table-container {
       width: 100%;
       overflow-x: auto;
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
       background: var(--bg-white);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
     }
 
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 800px;
+      min-width: 850px;
     }
 
     .data-table th, .data-table td {
-      padding: 0.85rem 1rem;
+      padding: 1rem;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       border-bottom: 1px solid var(--border-color);
       vertical-align: middle;
     }
 
-    .data-table th {
-      background-color: var(--navy-primary);
-      color: #ffffff;
-      font-weight: 600;
-      white-space: nowrap;
-    }
+    .data-table th { background-color: var(--navy-primary); color: #ffffff; font-weight: 600; }
+    .data-table tr:last-child td { border-bottom: none; }
 
-    .data-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .btn-actions {
-      display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-    }
-
+    .btn-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
     .action-btn {
-      padding: 0.4rem 0.65rem;
-      font-size: 0.78rem;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
       border-radius: 4px;
       cursor: pointer;
       border: 1px solid transparent;
       font-weight: 600;
-      white-space: nowrap;
       transition: opacity 0.2s;
     }
+    .action-btn:hover { opacity: 0.85; }
+    .btn-verify { background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+    .btn-sponsor { background-color: #d1fae5; color: var(--success-green); border-color: #a7f3d0; }
+    .btn-pay { background-color: var(--navy-primary); color: #ffffff; }
+    .btn-delete { background-color: #fee2e2; color: var(--danger-red); border-color: #fecaca; }
 
-    .action-btn:hover {
-      opacity: 0.85;
-    }
+    .badge-status { padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; display: inline-block; }
+    .status-verified { background: #e0f2fe; color: #0369a1; }
+    .status-pending { background: #f3f4f6; color: var(--text-muted); }
+    .status-sponsor { background: #d1fae5; color: var(--success-green); }
+    .status-standard { background: #f3f4f6; color: var(--text-muted); }
 
-    .btn-verify {
-      background-color: #e0f2fe;
-      color: #0369a1;
-      border-color: #bae6fd;
-    }
-
-    .btn-sponsor {
-      background-color: #d1fae5;
-      color: var(--success-green);
-      border-color: #a7f3d0;
-    }
-
-    .btn-pay {
-      background-color: var(--navy-primary);
-      color: #ffffff;
-    }
-
-    .btn-delete {
-      background-color: #fee2e2;
-      color: var(--danger-red);
-      border-color: #fecaca;
-    }
-
-    .badge-status {
-      display: inline-block;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .status-verified {
-      background: #e0f2fe;
-      color: #0369a1;
-    }
-
-    .status-pending {
-      background: #f3f4f6;
-      color: var(--text-muted);
-    }
-
-    .status-sponsor {
-      background: #d1fae5;
-      color: var(--success-green);
-    }
-
-    .status-standard {
-      background: #f3f4f6;
-      color: var(--text-muted);
-    }
-
-    .loader {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--navy-accent);
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: flex-start;
-      }
-    }
+    .loader { text-align: center; padding: 4rem; color: var(--navy-accent); font-weight: 600; font-size: 1.1rem; }
   </style>
 </head>
 <body>
@@ -261,9 +120,7 @@
   <header>
     <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
     <nav>
-      <a href="index.html">Directory</a>
-      <a href="seller.html">Seller Portal</a>
-      <a href="Master.html" class="active">Master Panel</a>
+      <a href="index.html">View Directory</a>
     </nav>
   </header>
 
@@ -271,30 +128,13 @@
     <div class="panel-header">
       <div>
         <h2>Master Control & Moderation</h2>
-        <p>Review supplier listings, toggle verification, activate sponsor rankings, or run payments.</p>
+        <p>Verify supplier listings, manage top-ranking sponsorships, or trigger ₹99 Razorpay checkouts.</p>
       </div>
-      <button class="action-btn btn-pay" onclick="loadData()" style="padding: 0.5rem 1rem; font-size: 0.85rem;">⟳ Refresh Data</button>
+      <button class="action-btn btn-pay" onclick="loadData()" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">⟳ Refresh Data</button>
     </div>
 
-    <!-- Quick Stats -->
-    <div class="stats-bar" id="statsBar" style="display: none;">
-      <div class="stat-card">
-        <div class="num" id="totalCount">0</div>
-        <div class="label">Total Businesses</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="verifiedCount">0</div>
-        <div class="label">Verified Suppliers</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="sponsorCount">0</div>
-        <div class="label">Sponsored Top Listings</div>
-      </div>
-    </div>
+    <div id="loader" class="loader">Loading all entries from Google Sheets...</div>
 
-    <div id="loader" class="loader">Loading entries from Google Sheets...</div>
-
-    <!-- Scrollable Table -->
     <div class="table-container" id="tableContainer" style="display: none;">
       <table class="data-table">
         <thead>
@@ -314,36 +154,33 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
-    const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID"; // Replace with your active Razorpay Key
+    const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID"; // Replace with your actual live/test key if needed
     let businesses = [];
 
-    async function loadData() {
+    function loadData() {
       const loader = document.getElementById("loader");
       const tableContainer = document.getElementById("tableContainer");
-      const statsBar = document.getElementById("statsBar");
-
       loader.style.display = "block";
-      loader.innerText = "Loading entries from Google Sheets...";
       tableContainer.style.display = "none";
-      statsBar.style.display = "none";
 
-      try {
-        const res = await fetch(SCRIPT_URL);
-        businesses = await res.json();
+      const script = document.createElement("script");
+      const callbackName = "handleMasterData_" + Date.now();
+      
+      window[callbackName] = function(data) {
+        businesses = Array.isArray(data) ? data : [];
         loader.style.display = "none";
         tableContainer.style.display = "block";
-        statsBar.style.display = "grid";
-        updateStats();
         renderTable();
-      } catch (err) {
-        loader.innerText = "Error communicating with Google Sheets. Please check your connection.";
-      }
-    }
+        delete window[callbackName];
+        script.remove();
+      };
 
-    function updateStats() {
-      document.getElementById("totalCount").innerText = businesses.length;
-      document.getElementById("verifiedCount").innerText = businesses.filter(b => b.isVerified).length;
-      document.getElementById("sponsorCount").innerText = businesses.filter(b => b.isSponsored).length;
+      script.src = `${SCRIPT_URL}?callback=${callbackName}`;
+      script.onerror = function() {
+        loader.innerText = "Error loading data. Verify Google Sheets web app permissions.";
+      };
+
+      document.body.appendChild(script);
     }
 
     function renderTable() {
@@ -351,7 +188,7 @@
       tbody.innerHTML = "";
 
       if (!businesses.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--text-muted);">No records found in Google Sheets.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 3rem; color: var(--text-muted);">No businesses found in Google Sheets.</td></tr>`;
         return;
       }
 
@@ -366,11 +203,10 @@
           </td>
           <td>
             ${b.location || "N/A"}<br>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">${b.contact || "No contact"}</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">📞 ${b.contact || "No contact"}</span>
+            ${b.email ? `<br><span style="font-size: 0.75rem; color: var(--text-muted);">✉️ ${b.email}</span>` : ''}
           </td>
-          <td>
-            <strong>${itemsCount}</strong> ${itemsCount === 1 ? 'item' : 'items'}
-          </td>
+          <td><strong>${itemsCount}</strong> ${itemsCount === 1 ? 'item' : 'items'}</td>
           <td>
             <span class="badge-status ${b.isVerified ? 'status-verified' : 'status-pending'}">
               ${b.isVerified ? '✓ Verified' : 'Pending'}
@@ -417,7 +253,7 @@
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify({ action: "UPGRADE_SPONSOR", id: id, toggle: true })
+        body: JSON.stringify({ action: "UPGRADE_SPONSOR", id: id })
       });
       setTimeout(loadData, 1500);
     }
@@ -440,7 +276,7 @@
 
       const options = {
         key: RAZORPAY_KEY,
-        amount: 9900, // ₹99.00 in paise
+        amount: 9900,
         currency: "INR",
         name: "OfbuzzMart",
         description: `Sponsor Placement for ${business.name}`,
@@ -454,10 +290,7 @@
           });
           setTimeout(loadData, 1500);
         },
-        prefill: {
-          name: business.name,
-          contact: business.contact
-        },
+        prefill: { name: business.name, contact: business.contact },
         theme: { color: "#0f172a" }
       };
 
