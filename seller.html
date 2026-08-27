@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Portal | List Your Business on OfbuzzMart</title>
+  <style>
+    :root {
+      --bg-white: #ffffff;
+      --bg-light: #f8fafc;
+      --text-main: #000000;
+      --text-muted: #4b5563;
+      --navy-primary: #0f172a;
+      --navy-accent: #1e3a8a;
+      --border-color: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    header {
+      background-color: var(--navy-primary);
+      color: #ffffff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-logo span {
+      color: #60a5fa;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      border: 1px solid #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    nav a:hover, nav a.active {
+      background-color: var(--navy-accent);
+      border-color: var(--navy-accent);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .form-box {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      background: var(--bg-white);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: 2px solid var(--navy-accent);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background-color: var(--navy-primary);
+      color: #ffffff;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: var(--navy-accent);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
+    <nav>
+      <a href="index.html">Directory</a>
+      <a href="seller.html" class="active">Seller Portal</a>
+      <a href="Master.html">Admin</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="form-box">
+      <h2 style="color: var(--navy-primary); margin-bottom: 0.5rem;">List Your Business</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Submit your company details and catalogue for direct B2B inquiries.</p>
+      
+      <form id="sellerForm" onsubmit="handleSellerSubmit(event)">
+        <div class="form-group">
+          <label>Business / Company Name *</label>
+          <input type="text" id="bizName" required placeholder="e.g. GemHub Jewels">
+        </div>
+        <div class="form-group">
+          <label>Business Category *</label>
+          <input type="text" id="bizCategory" required placeholder="e.g. Silver Jewelry Wholesale, Hardware Supply">
+        </div>
+        <div class="form-group">
+          <label>Operating City & Address *</label>
+          <input type="text" id="bizLocation" required placeholder="e.g. Gurugram, Delhi NCR">
+        </div>
+        <div class="form-group">
+          <label>Contact Phone / WhatsApp *</label>
+          <input type="tel" id="bizContact" required placeholder="+91 9811002233">
+        </div>
+        <div class="form-group">
+          <label>Photo / Logo Image URL</label>
+          <input type="url" id="bizImage" placeholder="https://images.unsplash.com/photo-...">
+        </div>
+        <div class="form-group">
+          <label>About Company & Offerings</label>
+          <textarea id="bizAbout" rows="3" placeholder="Provide wholesale minimums, product categories, capabilities..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Initial Catalogue Product (Title & Price)</label>
+          <input type="text" id="bizProduct" placeholder="e.g. Silver Ring 925 - ₹450/gram">
+        </div>
+        <button type="submit" id="submitBtn" class="btn">Submit Business Listing</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
+
+    async function handleSellerSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.innerText = "Submitting to Google Sheets...";
+      submitBtn.disabled = true;
+
+      const newEntry = {
+        id: "ofb-" + Date.now(),
+        name: document.getElementById("bizName").value,
+        category: document.getElementById("bizCategory").value,
+        location: document.getElementById("bizLocation").value,
+        contact: document.getElementById("bizContact").value,
+        image: document.getElementById("bizImage").value || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
+        about: document.getElementById("bizAbout").value,
+        catalogue: []
+      };
+
+      const productField = document.getElementById("bizProduct").value;
+      if (productField) {
+        newEntry.catalogue.push({
+          name: productField,
+          price: "Inquire for Quote",
+          img: newEntry.image
+        });
+      }
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
+        });
+
+        alert("Business listed successfully! It is now stored in Google Sheets.");
+        document.getElementById("sellerForm").reset();
+        window.location.href = "index.html";
+      } catch (err) {
+        alert("Failed to submit. Please check connection.");
+      } finally {
+        submitBtn.innerText = "Submit Business Listing";
+        submitBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
