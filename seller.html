@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seller Portal | List Your Business & Products</title>
+  <title>Seller Portal | List Your Business & Catalogue</title>
   <style>
     :root {
       --bg-white: #ffffff;
@@ -13,84 +13,259 @@
       --navy-primary: #0f172a;
       --navy-accent: #1e3a8a;
       --border-color: #e2e8f0;
+      --danger-red: #991b1b;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.5; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
 
     header {
       background-color: var(--navy-primary);
       color: #ffffff;
-      padding: 1rem 2rem;
+      padding: 1rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
-    .brand-logo span { color: #60a5fa; }
+    .brand-logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-logo span {
+      color: #60a5fa;
+    }
+
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
 
     nav a {
       color: #ffffff;
       text-decoration: none;
       border: 1px solid #ffffff;
-      padding: 0.5rem 1rem;
+      padding: 0.45rem 0.85rem;
       border-radius: 4px;
       font-weight: 600;
-      margin-left: 0.5rem;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: background 0.2s;
     }
-    nav a:hover, nav a.active { background-color: var(--navy-accent); border-color: var(--navy-accent); }
 
-    .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-    .form-box { border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; background: var(--bg-white); }
-    
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; margin-bottom: 0.35rem; font-weight: 600; }
+    nav a:hover, nav a.active {
+      background-color: var(--navy-accent);
+      border-color: var(--navy-accent);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .form-box {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      background: var(--bg-white);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    }
+
+    .form-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-header h2 {
+      font-size: 1.5rem;
+      color: var(--navy-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .form-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
     .form-group input, .form-group textarea {
-      width: 100%; padding: 0.75rem; border: 1px solid var(--border-color);
-      border-radius: 4px; font-size: 1rem; color: var(--text-main);
-    }
-    .form-group input:focus, .form-group textarea:focus { outline: 2px solid var(--navy-accent); }
-
-    /* Catalogue Repeater */
-    .catalogue-section {
-      background: var(--bg-light);
+      width: 100%;
+      padding: 0.75rem 1rem;
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      padding: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      background-color: #ffffff;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--navy-accent);
+      box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.15);
+    }
+
+    /* Multi-Product Catalogue Section */
+    .catalogue-wrapper {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
       margin: 1.5rem 0;
     }
+
+    .catalogue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .catalogue-header h3 {
+      font-size: 1.1rem;
+      color: var(--navy-primary);
+    }
+
+    .catalogue-header span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
     .product-row {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
       display: grid;
       grid-template-columns: 2fr 1.5fr 2fr auto;
       gap: 0.5rem;
       align-items: center;
-      margin-bottom: 0.75rem;
-      background: #ffffff;
-      padding: 0.75rem;
+    }
+
+    .product-row input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
       border: 1px solid var(--border-color);
       border-radius: 4px;
-    }
-    .product-row input { padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; }
-    .btn-remove-row {
-      background: #991b1b; color: #fff; border: none; padding: 0.5rem 0.75rem;
-      border-radius: 4px; cursor: pointer; font-weight: bold;
+      font-size: 0.9rem;
     }
 
-    .btn-add-product {
-      background: transparent; color: var(--navy-accent); border: 2px dashed var(--navy-accent);
-      padding: 0.6rem; width: 100%; border-radius: 4px; font-weight: 700; cursor: pointer;
+    .product-row input:focus {
+      outline: none;
+      border-color: var(--navy-accent);
     }
-    .btn-add-product:hover { background: #e0f2fe; }
+
+    .btn-remove {
+      background: #fee2e2;
+      color: var(--danger-red);
+      border: 1px solid #fecaca;
+      padding: 0.55rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .btn-remove:hover {
+      background: #fca5a5;
+    }
+
+    .btn-add-row {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: var(--navy-accent);
+      border: 2px dashed var(--navy-accent);
+      padding: 0.7rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .btn-add-row:hover {
+      background: #e0f2fe;
+    }
 
     .btn-submit {
-      display: block; width: 100%; background-color: var(--navy-primary); color: #ffffff;
-      padding: 0.85rem; border: none; border-radius: 4px; font-weight: 700; font-size: 1.05rem; cursor: pointer;
+      display: block;
+      width: 100%;
+      background-color: var(--navy-primary);
+      color: #ffffff;
+      padding: 0.85rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 1.5rem;
     }
-    .btn-submit:hover { background-color: var(--navy-accent); }
+
+    .btn-submit:hover {
+      background-color: var(--navy-accent);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 650px) {
+      .product-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .btn-remove {
+        justify-self: start;
+        width: 100%;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+      }
+      
+      .form-box {
+        padding: 1.25rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -106,53 +281,60 @@
 
   <div class="container">
     <div class="form-box">
-      <h2 style="color: var(--navy-primary); margin-bottom: 0.25rem;">Seller Registration & Catalogue</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Register your business and list multiple products with photos directly.</p>
-      
+      <div class="form-header">
+        <h2>List Your Business & Products</h2>
+        <p>Register your company profile and build your multi-product catalogue for B2B buyers.</p>
+      </div>
+
       <form id="sellerForm" onsubmit="handleSellerSubmit(event)">
         <div class="form-group">
-          <label>Company / Business Name *</label>
-          <input type="text" id="bizName" required placeholder="e.g. Royal Silver & Tools">
+          <label>Business / Company Name *</label>
+          <input type="text" id="bizName" required placeholder="e.g. Royal Precision Tools">
         </div>
+
         <div class="form-group">
           <label>Business Category *</label>
-          <input type="text" id="bizCategory" required placeholder="e.g. Silver Wholesale, Industrial Tools">
+          <input type="text" id="bizCategory" required placeholder="e.g. Industrial Machinery, Silver Wholesale, Electronics">
         </div>
+
         <div class="form-group">
           <label>Operating City & Address *</label>
           <input type="text" id="bizLocation" required placeholder="e.g. Gurugram, Delhi NCR">
         </div>
+
         <div class="form-group">
           <label>Contact Phone / WhatsApp *</label>
           <input type="tel" id="bizContact" required placeholder="+91 9811002233">
         </div>
+
         <div class="form-group">
-          <label>Main Cover / Logo URL</label>
+          <label>Main Cover / Logo Image URL</label>
           <input type="url" id="bizImage" placeholder="https://images.unsplash.com/photo-...">
         </div>
+
         <div class="form-group">
           <label>Company Overview & Bio</label>
-          <textarea id="bizAbout" rows="3" placeholder="Provide details on wholesale pricing, MOQ, services..."></textarea>
+          <textarea id="bizAbout" rows="3" placeholder="Describe wholesale capabilities, minimum order quantities (MOQ), and services..."></textarea>
         </div>
 
-        <!-- Dynamic Product Items -->
-        <div class="catalogue-section">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h4 style="color: var(--navy-primary);">Product & Service Catalogue</h4>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Add all your products</span>
+        <!-- Catalogue Builder -->
+        <div class="catalogue-wrapper">
+          <div class="catalogue-header">
+            <h3>Product & Service Catalogue</h3>
+            <span>Add all products</span>
           </div>
 
           <div id="productContainer">
             <!-- Initial Row -->
             <div class="product-row">
-              <input type="text" placeholder="Product Name *" class="p-name" required>
-              <input type="text" placeholder="Price (e.g. ₹450)" class="p-price" required>
-              <input type="url" placeholder="Photo URL" class="p-img">
-              <button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button>
+              <input type="text" placeholder="Product Title *" class="p-name" required>
+              <input type="text" placeholder="Price (e.g. ₹1,200/unit)" class="p-price" required>
+              <input type="url" placeholder="Product Image URL" class="p-img">
+              <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
             </div>
           </div>
 
-          <button type="button" class="btn-add-product" onclick="addProductRow()">+ Add Another Product</button>
+          <button type="button" class="btn-add-row" onclick="addProductRow()">+ Add Another Product</button>
         </div>
 
         <button type="submit" id="submitBtn" class="btn-submit">Publish Business & Catalogue</button>
@@ -168,10 +350,10 @@
       const row = document.createElement("div");
       row.className = "product-row";
       row.innerHTML = `
-        <input type="text" placeholder="Product Name *" class="p-name" required>
-        <input type="text" placeholder="Price (e.g. ₹450)" class="p-price" required>
-        <input type="url" placeholder="Photo URL" class="p-img">
-        <button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button>
+        <input type="text" placeholder="Product Title *" class="p-name" required>
+        <input type="text" placeholder="Price (e.g. ₹1,200/unit)" class="p-price" required>
+        <input type="url" placeholder="Product Image URL" class="p-img">
+        <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
       `;
       container.appendChild(row);
     }
@@ -181,7 +363,7 @@
       if (rows.length > 1) {
         btn.closest(".product-row").remove();
       } else {
-        alert("At least one product item is required.");
+        alert("At least one product item is required in your catalogue.");
       }
     }
 
@@ -191,7 +373,6 @@
       submitBtn.innerText = "Submitting to Google Sheets...";
       submitBtn.disabled = true;
 
-      // Extract all catalogue rows
       const catalogue = [];
       document.querySelectorAll(".product-row").forEach(row => {
         const name = row.querySelector(".p-name").value.trim();
@@ -201,7 +382,7 @@
           catalogue.push({
             name: name,
             price: price || "Quote on Request",
-            img: img || "https://via.placeholder.com/300x200?text=" + encodeURIComponent(name)
+            img: img || "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=300&q=80"
           });
         }
       });
@@ -225,11 +406,11 @@
           body: JSON.stringify({ action: "ADD_BUSINESS", data: newEntry })
         });
 
-        alert("Business & Catalogue successfully published to Google Sheets!");
+        alert("Business & Catalogue published successfully! Redirecting to directory...");
         document.getElementById("sellerForm").reset();
         window.location.href = "index.html";
       } catch (err) {
-        alert("Failed to submit. Please verify connection.");
+        alert("Failed to connect. Please verify your Google Sheet deployment.");
       } finally {
         submitBtn.innerText = "Publish Business & Catalogue";
         submitBtn.disabled = false;
