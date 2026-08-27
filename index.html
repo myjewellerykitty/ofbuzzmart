@@ -13,6 +13,7 @@
       --navy-primary: #0f172a;
       --navy-accent: #1e3a8a;
       --border-color: #e2e8f0;
+      --success-green: #047857;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -31,27 +32,15 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
     }
 
-    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; letter-spacing: -0.5px; }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
     .brand-logo span { color: #60a5fa; }
 
     nav a {
-      color: #ffffff;
-      text-decoration: none;
-      background-color: var(--navy-accent);
-      padding: 0.55rem 1.1rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.2s;
+      color: #ffffff; text-decoration: none; background-color: var(--navy-accent); padding: 0.55rem 1.1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s;
     }
     nav a:hover { background-color: #172554; }
 
-    .hero-section {
-      background-color: var(--bg-light);
-      border-bottom: 1px solid var(--border-color);
-      padding: 3.5rem 1rem;
-      text-align: center;
-    }
+    .hero-section { background-color: var(--bg-light); border-bottom: 1px solid var(--border-color); padding: 3.5rem 1rem; text-align: center; }
     .hero-section h1 { font-size: 2.25rem; font-weight: 800; color: var(--navy-primary); margin-bottom: 0.5rem; }
     .hero-section p { color: var(--text-muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
 
@@ -59,30 +48,14 @@
     
     .search-container { margin: -1.8rem auto 2.5rem auto; max-width: 700px; position: relative; }
     .search-input {
-      width: 100%;
-      padding: 1rem 1.25rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 1rem;
-      background: #ffffff;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      width: 100%; padding: 1rem 1.25rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
     .search-input:focus { outline: 2px solid var(--navy-accent); }
 
-    .business-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-    }
+    .business-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
 
     .card {
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background: var(--bg-white);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.25s ease;
+      border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-white); overflow: hidden; display: flex; flex-direction: column; transition: all 0.25s ease;
     }
     .card:hover { box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08); transform: translateY(-3px); }
     .card.sponsored { border: 2px solid var(--navy-accent); }
@@ -98,11 +71,10 @@
     .card-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; }
 
     .btn {
-      display: block; text-align: center; background-color: var(--navy-primary); color: #fff;
-      padding: 0.75rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; border: none; width: 100%; transition: background 0.2s;
+      display: block; text-align: center; background-color: var(--navy-primary); color: #fff; padding: 0.75rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; border: none; width: 100%; transition: background 0.2s; margin-bottom: 0.5rem;
     }
     .btn:hover { background-color: var(--navy-accent); }
-    .btn-secondary { background-color: transparent; color: var(--navy-primary); border: 1px solid var(--navy-primary); margin-top: 0.5rem; }
+    .btn-secondary { background-color: transparent; color: var(--navy-primary); border: 1px solid var(--navy-primary); }
     .btn-secondary:hover { background-color: var(--bg-light); color: var(--navy-accent); }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); z-index: 200; overflow-y: auto; padding: 2rem 1rem; }
@@ -123,9 +95,7 @@
 
   <header>
     <a href="index.html" class="brand-logo">Ofbuzz<span>Mart</span></a>
-    <nav>
-      <a href="seller.html">Seller Portal & Login</a>
-    </nav>
+    <nav><a href="seller.html">Seller Portal & Login</a></nav>
   </header>
 
   <div class="hero-section">
@@ -164,6 +134,11 @@
         businesses = Array.isArray(data) ? data : [];
         loader.style.display = "none";
         renderDirectory();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetId = urlParams.get('id');
+        if (targetId) openProfile(targetId);
+
         delete window[callbackName];
         script.remove();
       };
@@ -200,6 +175,8 @@
       filtered.forEach(b => {
         const rawContact = b.contact || "";
         const safePhone = cleanPhone(rawContact);
+        const shareUrl = `${window.location.origin}${window.location.pathname}?id=${b.id}`;
+
         const card = document.createElement("div");
         card.className = `card ${b.isSponsored ? "sponsored" : ""}`;
         card.innerHTML = `
@@ -213,7 +190,8 @@
             <p class="card-description">${b.about || "No description provided."}</p>
             <div class="card-meta">📍 ${b.location || "N/A"}<br>📞 ${rawContact || "N/A"}</div>
             <button class="btn" onclick="openProfile('${b.id}')">View Catalogue (${(b.catalogue || []).length} items)</button>
-            ${safePhone ? `<a href="tel:${safePhone}" class="btn btn-secondary">Call Supplier</a>` : `<button class="btn btn-secondary" disabled>No Phone</button>`}
+            <button class="btn btn-secondary" onclick="copyShareLink('${shareUrl}', this)">🔗 Copy Catalogue Link</button>
+            ${safePhone ? `<a href="tel:${safePhone}" class="btn btn-secondary" style="margin-top:0;">Call Supplier</a>` : `<button class="btn btn-secondary" disabled style="margin-top:0;">No Phone</button>`}
           </div>
         `;
         container.appendChild(card);
@@ -222,6 +200,18 @@
 
     function filterDirectory() {
       renderDirectory(document.getElementById("searchInput").value);
+    }
+
+    function copyShareLink(url, btn) {
+      navigator.clipboard.writeText(url).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = "✓ Link Copied!";
+        btn.style.color = "var(--success-green)";
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.color = "";
+        }, 2000);
+      });
     }
 
     function openProfile(id) {
@@ -253,7 +243,7 @@
         </div>
         
         <div style="margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-          ${digits ? `<a href="https://wa.me/${digits}" target="_blank" class="btn" style="flex: 1; min-width: 200px;">Chat on WhatsApp</a>` : ""}
+          ${digits ? `<a href="https://wa.me/${digits}" target="_blank" class="btn" style="flex: 1; min-width: 200px; margin-bottom:0;">Chat on WhatsApp</a>` : ""}
           <button class="btn btn-secondary" onclick="closeModal()" style="width: auto; min-width: 120px; margin-top: 0;">Close</button>
         </div>
       `;
