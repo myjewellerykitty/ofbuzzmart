@@ -22,16 +22,7 @@
     body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
 
     header {
-      background-color: var(--navy-primary);
-      color: #ffffff;
-      padding: 1.25rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      background-color: var(--navy-primary); color: #ffffff; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
     }
 
     .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
@@ -41,12 +32,7 @@
     .container { max-width: 850px; margin: 2.5rem auto; padding: 0 1.5rem; }
     
     .panel-card {
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 2.5rem;
-      background: var(--bg-white);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-      margin-bottom: 2rem;
+      border: 1px solid var(--border-color); border-radius: 12px; padding: 2.5rem; background: var(--bg-white); box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05); margin-bottom: 2rem;
     }
 
     h2 { font-size: 1.6rem; color: var(--navy-primary); margin-bottom: 0.3rem; }
@@ -55,14 +41,12 @@
     .form-group { margin-bottom: 1.25rem; }
     .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.92rem; }
     .form-group input, .form-group textarea {
-      width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color);
-      border-radius: 8px; font-size: 0.95rem; color: var(--text-main); background: #ffffff;
+      width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95rem; color: var(--text-main); background: #ffffff;
     }
     .form-group input:focus, .form-group textarea:focus { outline: 2px solid var(--navy-accent); }
 
     .btn {
-      display: block; width: 100%; background-color: var(--navy-primary); color: #ffffff;
-      padding: 0.85rem; border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s;
+      display: block; width: 100%; background-color: var(--navy-primary); color: #ffffff; padding: 0.85rem; border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s;
     }
     .btn:hover { background-color: var(--navy-accent); }
     .btn-secondary { background: transparent; color: var(--navy-primary); border: 1px solid var(--navy-primary); margin-top: 0.75rem; }
@@ -161,7 +145,7 @@
             <div id="dashProductContainer"></div>
             <button type="button" class="btn-add-row" onclick="addDashProductRow()">+ Add Product</button>
           </div>
-          <button type="submit" class="btn" id="saveDashBtn">Save All Changes</button>
+          <button type="submit" class="btn" id="saveDashBtn">Save All Changes to Google Sheets</button>
         </form>
       </div>
     </div>
@@ -234,7 +218,6 @@
       });
     }
 
-    // RAZORPAY ₹99 REGISTRATION PAYMENT
     function startRegistrationPayment(e) {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
@@ -243,7 +226,7 @@
 
       const options = {
         key: RAZORPAY_KEY,
-        amount: 9900, // ₹99 in paise
+        amount: 9900,
         currency: "INR",
         name: "OfbuzzMart",
         description: "Business Registration Fee",
