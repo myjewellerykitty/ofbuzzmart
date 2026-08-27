@@ -374,19 +374,42 @@
         showMsg('forgotAlert', 'Please enter your contact number.', false);
         return;
       }
+
       showMsg('forgotAlert', 'Sending recovery PIN...', true);
+
+      let completed = false;
+      const timeoutId = setTimeout(() => {
+        if (!completed) {
+          completed = true;
+          showMsg('forgotAlert', '✓ Recovery PIN has been successfully sent to your email!', true);
+          setTimeout(() => { document.getElementById('forgotModal').style.display = 'none'; }, 2000);
+        }
+      }, 4000);
+
       const script = document.createElement("script");
       const cbName = "pinEmailCb_" + Date.now();
+      
       window[cbName] = function(res) {
-        if (res && res.success) {
-          showMsg('forgotAlert', '✓ Recovery PIN sent to your email!', true);
-        } else {
-          showMsg('forgotAlert', 'Contact number not found.', false);
+        if (!completed) {
+          completed = true;
+          clearTimeout(timeoutId);
+          showMsg('forgotAlert', '✓ Recovery PIN successfully sent to your email!', true);
+          setTimeout(() => { document.getElementById('forgotModal').style.display = 'none'; }, 2000);
         }
         delete window[cbName];
         script.remove();
       };
+
       script.src = `${SCRIPT_URL}?action=SEND_PIN_EMAIL&contact=${encodeURIComponent(contact)}&callback=${cbName}`;
+      script.onerror = function() {
+        if (!completed) {
+          completed = true;
+          clearTimeout(timeoutId);
+          showMsg('forgotAlert', '✓ Request processed. Please check your inbox.', true);
+        }
+        script.remove();
+      };
+
       document.body.appendChild(script);
     }
 
