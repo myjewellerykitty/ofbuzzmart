@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Master Console | OfbuzzMart Admin</title>
-  <!-- Razorpay Checkout Integration -->
+  <title>Master Panel | OfbuzzMart Administration</title>
+  <!-- Razorpay SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
@@ -17,18 +17,8 @@
       --border-color: #e2e8f0;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-white);
-      color: var(--text-main);
-      line-height: 1.5;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-white); color: var(--text-main); line-height: 1.5; }
 
     header {
       background-color: var(--navy-primary);
@@ -42,16 +32,8 @@
       z-index: 100;
     }
 
-    .brand-logo {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #ffffff;
-      text-decoration: none;
-    }
-
-    .brand-logo span {
-      color: #60a5fa;
-    }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
+    .brand-logo span { color: #60a5fa; }
 
     nav a {
       color: #ffffff;
@@ -62,38 +44,25 @@
       font-weight: 600;
       margin-left: 0.5rem;
     }
+    nav a:hover, nav a.active { background-color: var(--navy-accent); border-color: var(--navy-accent); }
 
-    nav a:hover, nav a.active {
-      background-color: var(--navy-accent);
-      border-color: var(--navy-accent);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+    
     .data-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1.5rem;
     }
-
     .data-table th, .data-table td {
       border: 1px solid var(--border-color);
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1rem;
       text-align: left;
       font-size: 0.95rem;
     }
-
-    .data-table th {
-      background-color: var(--navy-primary);
-      color: #ffffff;
-    }
+    .data-table th { background-color: var(--navy-primary); color: #ffffff; }
 
     .action-btn {
-      padding: 0.35rem 0.7rem;
+      padding: 0.4rem 0.8rem;
       font-size: 0.8rem;
       margin-right: 0.25rem;
       border-radius: 3px;
@@ -101,18 +70,12 @@
       border: none;
       background: var(--navy-accent);
       color: #fff;
-    }
-
-    .action-btn.delete {
-      background: #991b1b;
-    }
-
-    .loader {
-      text-align: center;
-      padding: 2rem;
-      color: var(--navy-accent);
       font-weight: 600;
     }
+    .action-btn.delete { background: #991b1b; }
+    .action-btn.sponsor-btn { background: #047857; }
+
+    .loader { text-align: center; padding: 3rem; color: var(--navy-accent); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -122,26 +85,29 @@
     <nav>
       <a href="index.html">Directory</a>
       <a href="seller.html">Seller Portal</a>
-      <a href="Master.html" class="active">Master Admin</a>
+      <a href="Master.html" class="active">Master Panel</a>
     </nav>
   </header>
 
   <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h2 style="color: var(--navy-primary);">Master Control & Moderation</h2>
-      <span style="font-size: 0.9rem; color: var(--text-muted);">Sponsor Upgrade: ₹99 via Razorpay</span>
+      <div>
+        <h2 style="color: var(--navy-primary);">Master Control & Moderation</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Toggle verified status, toggle sponsor ranking, or trigger ₹99 Razorpay checkout.</p>
+      </div>
+      <button class="action-btn" onclick="loadData()">⟳ Refresh Data</button>
     </div>
 
-    <div id="loader" class="loader">Loading entries from Google Sheets...</div>
+    <div id="loader" class="loader">Loading all data from Google Sheets...</div>
 
     <table class="data-table" id="adminTable" style="display: none;">
       <thead>
         <tr>
-          <th>Business Name</th>
-          <th>Category</th>
-          <th>Location</th>
+          <th>Business</th>
+          <th>Location / Contact</th>
+          <th>Products</th>
           <th>Verification</th>
-          <th>Sponsorship (Top Pin)</th>
+          <th>Sponsor Placement</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -151,12 +117,15 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVqXTBxrODude9ddkHna4l-4vaNV6S1NCEL5XGatVR0Av5OF75_Yc3_Gy5Ej0KoSCj/exec";
-    const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID"; // Replace with your active Razorpay Key ID
+    const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID"; // Replace with your active Razorpay Key
     let businesses = [];
 
     async function loadData() {
       const loader = document.getElementById("loader");
       const table = document.getElementById("adminTable");
+      loader.style.display = "block";
+      table.style.display = "none";
+
       try {
         const res = await fetch(SCRIPT_URL);
         businesses = await res.json();
@@ -164,7 +133,7 @@
         table.style.display = "table";
         renderTable();
       } catch (err) {
-        loader.innerText = "Error loading admin data.";
+        loader.innerText = "Error communicating with Google Sheets.";
       }
     }
 
@@ -172,20 +141,33 @@
       const tbody = document.getElementById("adminTableBody");
       tbody.innerHTML = "";
 
+      if (!businesses.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No records exist in Google Sheets.</td></tr>`;
+        return;
+      }
+
       businesses.forEach(b => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td><strong>${b.name}</strong></td>
-          <td>${b.category}</td>
-          <td>${b.location}</td>
-          <td>${b.isVerified ? "✅ Verified" : "⏳ Pending"}</td>
           <td>
-            ${b.isSponsored 
-              ? `<span style="color: green; font-weight: bold;">Sponsored (Top)</span>` 
-              : `<button class="action-btn" onclick="initiateRazorpayPayment('${b.id}')">Pay ₹99 Sponsor</button>`}
+            <strong>${b.name || "Untitled"}</strong><br>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">${b.category || "General"}</span>
+          </td>
+          <td>
+            ${b.location || "N/A"}<br>
+            <span style="font-size: 0.8rem;">${b.contact || "No phone"}</span>
+          </td>
+          <td><strong>${(b.catalogue || []).length}</strong> items</td>
+          <td>
+            ${b.isVerified ? `<span style="color: #0369a1; font-weight: bold;">✓ Verified</span>` : `<span style="color: #6b7280;">Pending</span>`}
+          </td>
+          <td>
+            ${b.isSponsored ? `<span style="color: #047857; font-weight: bold;">★ Pinned Top</span>` : `<span>Standard</span>`}
           </td>
           <td>
             <button class="action-btn" onclick="toggleVerification('${b.id}')">${b.isVerified ? 'Unverify' : 'Verify'}</button>
+            <button class="action-btn sponsor-btn" onclick="toggleSponsorDirect('${b.id}')">${b.isSponsored ? 'Remove Top' : 'Pin Top'}</button>
+            <button class="action-btn" onclick="initiateRazorpayPayment('${b.id}')">Pay ₹99</button>
             <button class="action-btn delete" onclick="deleteBusiness('${b.id}')">Delete</button>
           </td>
         `;
@@ -193,44 +175,56 @@
       });
     }
 
+    // Direct Toggle without Gateway
     async function toggleVerification(id) {
       await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({ action: "TOGGLE_VERIFY", id: id })
       });
       setTimeout(loadData, 1500);
     }
 
+    async function toggleSponsorDirect(id) {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ action: "UPGRADE_SPONSOR", id: id, toggle: true })
+      });
+      setTimeout(loadData, 1500);
+    }
+
     async function deleteBusiness(id) {
-      if (confirm("Delete this listing from Google Sheets database?")) {
+      if (confirm("Delete this listing permanently from Google Sheets?")) {
         await fetch(SCRIPT_URL, {
           method: "POST",
           mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({ action: "DELETE_BUSINESS", id: id })
         });
         setTimeout(loadData, 1500);
       }
     }
 
+    // Gateway Payment Option
     function initiateRazorpayPayment(businessId) {
       const business = businesses.find(b => b.id === businessId);
       if (!business) return;
 
       const options = {
         key: RAZORPAY_KEY,
-        amount: 9900, // ₹99 in paise
+        amount: 9900, // ₹99
         currency: "INR",
         name: "OfbuzzMart",
         description: `Top Placement for ${business.name}`,
         handler: async function (response) {
-          alert(`Payment complete (ID: ${response.razorpay_payment_id}). Pinning to top...`);
+          alert(`Payment success! ID: ${response.razorpay_payment_id}`);
           await fetch(SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "text/plain" },
             body: JSON.stringify({ action: "UPGRADE_SPONSOR", id: businessId })
           });
           setTimeout(loadData, 1500);
@@ -239,19 +233,12 @@
           name: business.name,
           contact: business.contact
         },
-        theme: {
-          color: "#0f172a"
-        }
+        theme: { color: "#0f172a" }
       };
 
       if (RAZORPAY_KEY === "YOUR_RAZORPAY_KEY_ID") {
-        if (confirm("Demo mode: Simulate ₹99 payment and pin to top in Google Sheets?")) {
-          fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "UPGRADE_SPONSOR", id: businessId })
-          }).then(() => setTimeout(loadData, 1500));
+        if (confirm("Test Mode: Simulate ₹99 payment and update Google Sheet?")) {
+          toggleSponsorDirect(businessId);
         }
         return;
       }
