@@ -35,7 +35,7 @@
 
     .brand-logo { font-size: 1.5rem; font-weight: 800; color: #ffffff; text-decoration: none; }
     .brand-logo span { color: #60a5fa; }
-    nav a { color: #ffffff; text-decoration: background-color var(--navy-accent); background: var(--navy-accent); padding: 0.55rem 1.1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
+    nav a { color: #ffffff; text-decoration: none; background: var(--navy-accent); padding: 0.55rem 1.1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
 
     .container { max-width: 850px; margin: 2.5rem auto; padding: 0 1.5rem; }
     
@@ -71,7 +71,6 @@
     .alert-success { background: #d1fae5; color: var(--success-green); border: 1px solid #a7f3d0; }
     .alert-error { background: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; }
 
-    /* Catalogue Repeater */
     .catalogue-wrapper { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0; }
     .product-row { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; margin-bottom: 0.75rem; display: grid; grid-template-columns: 2fr 1.5fr 2fr auto; gap: 0.5rem; align-items: center; }
     .product-row input { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; }
@@ -102,7 +101,7 @@
 
   <div class="container">
 
-    <!-- VIEW 1: LOGIN & REGISTRATION SELECTION -->
+    <!-- LOGIN & REGISTRATION -->
     <div id="authView" class="view-panel active">
       <div class="panel-card">
         <div class="tab-nav">
@@ -117,14 +116,8 @@
           <div id="loginAlert" class="alert"></div>
 
           <form onsubmit="handleLogin(event)">
-            <div class="form-group">
-              <label>Contact Number *</label>
-              <input type="tel" id="loginContact" required placeholder="+91 9811002233">
-            </div>
-            <div class="form-group">
-              <label>4-Digit PIN *</label>
-              <input type="password" id="loginPin" maxlength="4" required placeholder="••••">
-            </div>
+            <div class="form-group"><label>Contact Number *</label><input type="tel" id="loginContact" required placeholder="+91 9811002233"></div>
+            <div class="form-group"><label>4-Digit PIN *</label><input type="password" id="loginPin" maxlength="4" required placeholder="••••"></div>
             <button type="submit" class="btn">Access Dashboard</button>
             <button type="button" class="btn btn-secondary" onclick="openForgotPinModal()">Forgot PIN? (Recover via Email)</button>
           </form>
@@ -152,7 +145,7 @@
       </div>
     </div>
 
-    <!-- VIEW 2: DASHBOARD (EDIT PROFILE & PRODUCTS) -->
+    <!-- SELLER DASHBOARD -->
     <div id="dashboardView" class="view-panel">
       <div class="panel-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -179,7 +172,6 @@
             <input type="password" id="editNewPin" maxlength="4" placeholder="Leave blank to keep current PIN">
           </div>
 
-          <!-- Catalogue Builder -->
           <div class="catalogue-wrapper">
             <h3 style="margin-bottom: 1rem; color: var(--navy-primary);">Product Catalogue</h3>
             <div id="dashProductContainer"></div>
@@ -210,7 +202,6 @@
     let currentSeller = null;
     let allBusinesses = [];
 
-    // Pre-fetch businesses for instant login verification
     function fetchAllBusinesses(callback) {
       const script = document.createElement("script");
       const cbName = "fetchBiz_" + Date.now();
@@ -244,7 +235,6 @@
       el.style.display = 'block';
     }
 
-    // LOGIN
     function handleLogin(e) {
       e.preventDefault();
       const contactInput = document.getElementById('loginContact').value.trim();
@@ -261,7 +251,6 @@
       });
     }
 
-    // REGISTER
     async function handleRegister(e) {
       e.preventDefault();
       const newEntry = {
@@ -292,7 +281,6 @@
       }
     }
 
-    // OPEN DASHBOARD
     function openDashboard() {
       document.getElementById('authView').classList.remove('active');
       document.getElementById('dashboardView').classList.add('active');
@@ -306,7 +294,6 @@
       document.getElementById('editImage').value = currentSeller.image;
       document.getElementById('editAbout').value = currentSeller.about;
 
-      // Load catalogue items
       const container = document.getElementById('dashProductContainer');
       container.innerHTML = "";
       if (currentSeller.catalogue && currentSeller.catalogue.length) {
@@ -329,7 +316,6 @@
       container.appendChild(row);
     }
 
-    // UPDATE PROFILE & CATALOGUE
     async function handleUpdateProfile(e) {
       e.preventDefault();
       const saveBtn = document.getElementById('saveDashBtn');
@@ -385,7 +371,6 @@
       document.getElementById('forgotModal').style.display = 'block';
     }
 
-    // FORGOT PIN VIA EMAIL
     async function sendPinEmail() {
       const contact = document.getElementById('forgotContact').value.trim();
       if (!contact) {
@@ -406,7 +391,6 @@
       }
     }
 
-    // Initial cache preload
     fetchAllBusinesses();
   </script>
 </body>
